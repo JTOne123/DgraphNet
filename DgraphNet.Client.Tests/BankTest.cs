@@ -19,10 +19,10 @@ namespace DgraphNet.Client.Tests
         int _runs = 0;
         int _aborts = 0;
 
-        private void CreateAccounts()
+        private async Task CreateAccounts()
         {
             var schema = "bal: int .";
-            _client.Alter(new Operation { Schema = schema });
+            await _client.AlterAsync(new Operation { Schema = schema });
 
             var accounts = new List<Account>();
 
@@ -42,11 +42,11 @@ namespace DgraphNet.Client.Tests
                 SetJson = ByteString.CopyFromUtf8(jsonStr)
             };
 
-            var ag = txn.Mutate(mut);
+            var ag = await txn.MutateAsync(mut);
             _uids.AddRange(ag.Uids.Select(x => x.Value));
         }
 
-        private void RunTotal()
+        private async Task RunTotal()
         {
             string q =
               " {\n"
@@ -61,22 +61,22 @@ namespace DgraphNet.Client.Tests
             q = q.Replace("%0", string.Join(",", _uids));
 
             var txn = _client.NewTransaction();
-            var resp = txn.Query(q);
+            var resp = await txn.QueryAsync(q);
 
             Console.WriteLine($"response json: {resp.Json.ToStringUtf8()}");
             Console.WriteLine($"Runs: {_runs}, Aborts: {_aborts}");
         }
 
-        private void RunTotalInLoop()
+        private async Task RunTotalInLoop()
         {
             while (true)
             {
-                RunTotal();
-                Thread.Sleep(1000);
+                await RunTotal();
+                await Task.Delay(1000);
             }
         }
 
-        private void RunTxn()
+        private async Task RunTxn()
         {
             string from, to;
             var rand = new Random();
@@ -100,7 +100,7 @@ namespace DgraphNet.Client.Tests
                     .Replace("%0", from)
                     .Replace("%1", to);
 
-                var resp = txn.Query(fq);
+                var resp = await txn.QueryAsync(fq);
                 var accounts = JsonConvert.DeserializeObject<Accounts>(resp.Json.ToStringUtf8());
 
                 if (accounts.Both.Count != 2)
@@ -116,22 +116,22 @@ namespace DgraphNet.Client.Tests
                     SetJson = ByteString.CopyFromUtf8(JsonConvert.SerializeObject(accounts))
                 };
 
-                txn.Mutate(mut);
-                txn.Commit();
+                await txn.MutateAsync(mut);
+                await txn.CommitAsync();
             }
             finally
             {
-                txn.Discard();
+                await txn.DiscardAsync();
             }
         }
 
-        private void TxnLoop()
+        private async Task TxnLoop()
         {
             while (true)
             {
                 try
                 {
-                    RunTxn();
+                    await RunTxn();
 
                     var r = Interlocked.Increment(ref _runs);
 
@@ -148,9 +148,9 @@ namespace DgraphNet.Client.Tests
         }
 
         [Test]
-        public void test_bank()
+        public async Task test_bank()
         {
-            CreateAccounts();
+            await CreateAccounts();
 
             var totalTask = Task.Run(() => RunTotalInLoop());
 

@@ -19,13 +19,13 @@ namespace DgraphNet.Client.Tests
         protected const string PORT = "9080";
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public async Task OneTimeSetUp()
         {
             _channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
             var stub = new DgraphClient(_channel);
             _client = new DgraphNet(new[] { stub });
 
-            _client.Alter(new Operation { DropAll = true });
+            await _client.AlterAsync(new Operation { DropAll = true });
         }
 
         [OneTimeTearDown]

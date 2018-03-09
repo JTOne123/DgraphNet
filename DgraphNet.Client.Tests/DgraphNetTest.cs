@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using static DgraphNet.Client.Proto.Dgraph;
 
 namespace DgraphNet.Client.Tests
@@ -18,9 +19,9 @@ namespace DgraphNet.Client.Tests
     public class DgraphNetTest : DgraphIntegrationTest
     {
         [SetUp]
-        public void BeforeEach()
+        public async Task BeforeEach()
         {
-            _client.Alter(new Operation { DropAll = true });
+            await _client.AlterAsync(new Operation { DropAll = true });
         }
 
         [Test]
@@ -53,11 +54,11 @@ namespace DgraphNet.Client.Tests
         }
 
         [Test]
-        public void test_txn_query_variables()
+        public async Task test_txn_query_variables()
         {
             // Set schema
             var op = new Operation { Schema = "name: string @index(exact) ." };
-            _client.Alter(op);
+            await _client.AlterAsync(op);
 
             // Add data
             var json = new JObject();
@@ -69,7 +70,7 @@ namespace DgraphNet.Client.Tests
                 SetJson = ByteString.CopyFromUtf8(json.ToString())
             };
 
-            _client.NewTransaction().Mutate(mut);
+            await _client.NewTransaction().MutateAsync(mut);
 
             // Query
             string query = "query me($a: string) { me(func: eq(name, $a)) { name }}";
@@ -78,7 +79,7 @@ namespace DgraphNet.Client.Tests
                 { "$a", "Alice" }
             };
 
-            var res = _client.NewTransaction().QueryWithVars(query, vars);
+            var res = await _client.NewTransaction().QueryWithVarsAsync(query, vars);
 
             // Verify data as expected
             json = JObject.Parse(res.Json.ToStringUtf8());
@@ -92,7 +93,7 @@ namespace DgraphNet.Client.Tests
         }
 
         [Test]
-        public void test_delete()
+        public async Task test_delete()
         {
             using (var txn = _client.NewTransaction())
             {
@@ -101,13 +102,13 @@ namespace DgraphNet.Client.Tests
                     SetNquads = ByteString.CopyFromUtf8("<_:bob> <name> \"Bob\" .")
                 };
 
-                var ag = txn.Mutate(mutation);
+                var ag = await txn.MutateAsync(mutation);
                 string bob = ag.Uids["bob"];
 
                 string query = "{ find_bob(func: uid(%0)) { name } }"
                     .Replace("%0", bob);
 
-                var resp = txn.Query(query);
+                var resp = await txn.QueryAsync(query);
                 var json = JObject.Parse(resp.Json.ToStringUtf8());
 
                 var arr = json.GetValue("find_bob") as JArray;
@@ -118,22 +119,22 @@ namespace DgraphNet.Client.Tests
                     DelNquads = ByteString.CopyFromUtf8("<%0> * * .".Replace("%0", bob))
                 };
 
-                txn.Mutate(mutation);
+                await txn.MutateAsync(mutation);
 
-                resp = txn.Query(query);
+                resp = await txn.QueryAsync(query);
                 json = JObject.Parse(resp.Json.ToStringUtf8());
 
                 arr = json.GetValue("find_bob") as JArray;
                 Assert.IsTrue(arr.Count == 0);
 
-                txn.Commit();
+                await txn.CommitAsync();
             }
         }
 
         [Test]
         public void test_commit_after_CommitNow()
         {
-            Assert.Throws<TxnFinishedException>(() =>
+            Assert.ThrowsAsync<TxnFinishedException>(async () =>
             {
                 using (var txn = _client.NewTransaction())
                 {
@@ -143,14 +144,14 @@ namespace DgraphNet.Client.Tests
                         CommitNow = true
                     };
 
-                    txn.Mutate(mut);
-                    txn.Commit();
+                    await txn.MutateAsync(mut);
+                    await txn.CommitAsync();
                 }
             });
         }
 
         [Test]
-        public void test_discard_abort()
+        public async Task test_discard_abort()
         {
             using (var txn = _client.NewTransaction())
             {
@@ -160,12 +161,12 @@ namespace DgraphNet.Client.Tests
                     CommitNow = true
                 };
 
-                txn.Mutate(mut);
+                await txn.MutateAsync(mut);
             }
         }
 
         [Test]
-        public void test_client_with_deadline()
+        public async Task test_client_with_deadline()
         {
             var channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
             var stub = new DgraphClient(channel);
@@ -174,7 +175,7 @@ namespace DgraphNet.Client.Tests
             var op = new Operation { Schema = "name: string @index(exact) ." };
 
             // Alters schema without exceeding the given deadline.
-            client.Alter(op);
+            await client.AlterAsync(op);
 
             // Creates a blocking stub directly, in order to force a deadline to be exceeded.
             var method = typeof(DgraphNet).GetMethod("AnyClient", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -182,7 +183,7 @@ namespace DgraphNet.Client.Tests
 
             Thread.Sleep(1001);
 
-            Assert.Throws<RpcException>(() => stub.Alter(op, callOptions), "Deadline should have been exceeded");
+            Assert.ThrowsAsync<RpcException>(async () => await stub.AlterAsync(op, callOptions), "Deadline should have been exceeded");
         }
     }
 }
