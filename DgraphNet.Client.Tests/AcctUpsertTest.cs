@@ -46,10 +46,10 @@ namespace DgraphNet.Client.Tests
 
             string schema =
                 "\n"
-                    + "   first:  string   @index(term) .\n"
-                    + "   last:   string   @index(hash) .\n"
-                    + "   age:    int      @index(int)  .\n"
-                    + "   when:   int                   .\n";
+                    + "   first:  string   @index(term)  @upsert .\n"
+                    + "   last:   string   @index(hash)  @upsert .\n"
+                    + "   age:    int      @index(int)   @upsert .\n"
+                    + "   when:   int      @index(int)   @upsert .\n";
 
             _client.Alter(new Operation { Schema = schema });
         }
@@ -161,7 +161,7 @@ namespace DgraphNet.Client.Tests
                     .Select(_ => Task.Run(() => Upsert(a))));
             }
 
-            Task.WaitAll(tasks.ToArray(), 1000 * 60 * 5);
+            Task.WaitAll(tasks.ToArray(), TimeSpan.FromMinutes(5).Milliseconds);
         }
 
         private void CheckIntegrity()
@@ -182,7 +182,7 @@ namespace DgraphNet.Client.Tests
 
             var accountSet = new HashSet<string>();
 
-            foreach(var record in decode2.All)
+            foreach (var record in decode2.All)
             {
                 Assert.IsTrue(!string.IsNullOrEmpty(record.First));
                 Assert.IsTrue(!string.IsNullOrEmpty(record.Last));
@@ -198,7 +198,7 @@ namespace DgraphNet.Client.Tests
 
             Assert.IsTrue(accountSet.Count == _accounts.Count);
 
-            foreach(var a in _accounts)
+            foreach (var a in _accounts)
             {
                 string entry = "%0_%1_%2"
                     .Replace("%0", a.First)

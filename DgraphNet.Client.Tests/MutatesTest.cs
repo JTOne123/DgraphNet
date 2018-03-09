@@ -49,6 +49,8 @@ namespace DgraphNet.Client.Tests
         [Test]
         public void test_query_3_quads()
         {
+            if (_uidsMap == null) test_insert_3_quads();
+
             var txn = _client.NewTransaction();
             var uids = _data.Select(x => _uidsMap[x]);
             var query = "{ me(func: uid(%0)) { name } }"

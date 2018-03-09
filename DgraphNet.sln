@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A95B3787-6D50-47AA-B619-9E833C3FA4E6}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Protos\api.proto = Protos\api.proto
+		protoc.bat = protoc.bat
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

@@ -1,12 +1,16 @@
 ﻿using DgraphNet.Client.Proto;
 using Google.Protobuf;
+using Grpc.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
+using static DgraphNet.Client.Proto.Dgraph;
 
 namespace DgraphNet.Client.Tests
 {
@@ -163,7 +167,22 @@ namespace DgraphNet.Client.Tests
         [Test]
         public void test_client_with_deadline()
         {
+            var channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
+            var stub = new DgraphClient(channel);
+            _client = new DgraphNetClient(new[] { stub }, 1);
 
+            var op = new Operation { Schema = "name: string @index(exact) ." };
+
+            // Alters schema without exceeding the given deadline.
+            _client.Alter(op);
+
+            // Creates a blocking stub directly, in order to force a deadline to be exceeded.
+            var method = typeof(DgraphNetClient).GetMethod("AnyClient", BindingFlags.NonPublic | BindingFlags.Instance);
+            var (stub2, callOptions) = (ValueTuple<DgraphClient, CallOptions>)method.Invoke(_client, Array.Empty<object>());
+
+            Thread.Sleep(1001);
+
+            Assert.Throws<RpcException>(() => stub.Alter(op, callOptions), "Deadline should have been exceeded");
         }
     }
 }

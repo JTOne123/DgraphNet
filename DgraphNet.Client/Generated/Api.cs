@@ -28,53 +28,53 @@ namespace DgraphNet.Client.Proto {
             "VmFyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEidgoI",
             "UmVzcG9uc2USDAoEanNvbhgBIAEoDBIfCgZzY2hlbWEYAiADKAsyDy5hcGku",
             "U2NoZW1hTm9kZRIcCgN0eG4YAyABKAsyDy5hcGkuVHhuQ29udGV4dBIdCgds",
-            "YXRlbmN5GAwgASgLMgwuYXBpLkxhdGVuY3kigAEKCEFzc2lnbmVkEiUKBHVp",
+            "YXRlbmN5GAwgASgLMgwuYXBpLkxhdGVuY3kinwEKCEFzc2lnbmVkEiUKBHVp",
             "ZHMYASADKAsyFy5hcGkuQXNzaWduZWQuVWlkc0VudHJ5EiAKB2NvbnRleHQY",
-            "AiABKAsyDy5hcGkuVHhuQ29udGV4dBorCglVaWRzRW50cnkSCwoDa2V5GAEg",
-            "ASgJEg0KBXZhbHVlGAIgASgJOgI4ASLQAQoITXV0YXRpb24SEAoIc2V0X2pz",
-            "b24YASABKAwSEwoLZGVsZXRlX2pzb24YAiABKAwSEgoKc2V0X25xdWFkcxgD",
-            "IAEoDBISCgpkZWxfbnF1YWRzGAQgASgMEhcKA3NldBgKIAMoCzIKLmFwaS5O",
-            "UXVhZBIXCgNkZWwYCyADKAsyCi5hcGkuTlF1YWQSEAoIc3RhcnRfdHMYDSAB",
-            "KAQSEgoKY29tbWl0X25vdxgOIAEoCBIdChVpZ25vcmVfaW5kZXhfY29uZmxp",
-            "Y3QYDyABKAgiLQoLQXNzaWduZWRJZHMSDwoHc3RhcnRJZBgBIAEoBBINCgVl",
-            "bmRJZBgCIAEoBCJACglPcGVyYXRpb24SDgoGc2NoZW1hGAEgASgJEhEKCWRy",
-            "b3BfYXR0chgCIAEoCRIQCghkcm9wX2FsbBgDIAEoCCIXCgdQYXlsb2FkEgwK",
-            "BERhdGEYASABKAwicAoKVHhuQ29udGV4dBIQCghzdGFydF90cxgBIAEoBBIR",
-            "Cgljb21taXRfdHMYAiABKAQSDwoHYWJvcnRlZBgDIAEoCBIMCgRrZXlzGAQg",
-            "AygJEh4KCGxpbl9yZWFkGA0gASgLMgwuYXBpLkxpblJlYWQiBwoFQ2hlY2si",
-            "FgoHVmVyc2lvbhILCgN0YWcYASABKAkiWQoHTGluUmVhZBIiCgNpZHMYASAD",
-            "KAsyFS5hcGkuTGluUmVhZC5JZHNFbnRyeRoqCghJZHNFbnRyeRILCgNrZXkY",
-            "ASABKA0SDQoFdmFsdWUYAiABKAQ6AjgBIkkKB0xhdGVuY3kSEgoKcGFyc2lu",
-            "Z19ucxgBIAEoBBIVCg1wcm9jZXNzaW5nX25zGAIgASgEEhMKC2VuY29kaW5n",
-            "X25zGAMgASgEIpkBCgVOUXVhZBIPCgdzdWJqZWN0GAEgASgJEhEKCXByZWRp",
-            "Y2F0ZRgCIAEoCRIRCglvYmplY3RfaWQYAyABKAkSIAoMb2JqZWN0X3ZhbHVl",
-            "GAQgASgLMgouYXBpLlZhbHVlEg0KBWxhYmVsGAUgASgJEgwKBGxhbmcYBiAB",
-            "KAkSGgoGZmFjZXRzGAcgAygLMgouYXBpLkZhY2V0IvQBCgVWYWx1ZRIVCgtk",
-            "ZWZhdWx0X3ZhbBgBIAEoCUgAEhMKCWJ5dGVzX3ZhbBgCIAEoDEgAEhEKB2lu",
-            "dF92YWwYAyABKANIABISCghib29sX3ZhbBgEIAEoCEgAEhEKB3N0cl92YWwY",
-            "BSABKAlIABIUCgpkb3VibGVfdmFsGAYgASgBSAASEQoHZ2VvX3ZhbBgHIAEo",
-            "DEgAEhIKCGRhdGVfdmFsGAggASgMSAASFgoMZGF0ZXRpbWVfdmFsGAkgASgM",
-            "SAASFgoMcGFzc3dvcmRfdmFsGAogASgJSAASEQoHdWlkX3ZhbBgLIAEoBEgA",
-            "QgUKA3ZhbCKrAQoFRmFjZXQSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgM",
-            "EiQKCHZhbF90eXBlGAMgASgOMhIuYXBpLkZhY2V0LlZhbFR5cGUSDgoGdG9r",
-            "ZW5zGAQgAygJEg0KBWFsaWFzGAUgASgJIkEKB1ZhbFR5cGUSCgoGU1RSSU5H",
-            "EAASBwoDSU5UEAESCQoFRkxPQVQQAhIICgRCT09MEAMSDAoIREFURVRJTUUQ",
-            "BCJ9CgpTY2hlbWFOb2RlEhEKCXByZWRpY2F0ZRgBIAEoCRIMCgR0eXBlGAIg",
-            "ASgJEg0KBWluZGV4GAMgASgIEhEKCXRva2VuaXplchgEIAMoCRIPCgdyZXZl",
-            "cnNlGAUgASgIEg0KBWNvdW50GAYgASgIEgwKBGxpc3QYByABKAgy5AEKBkRn",
-            "cmFwaBImCgVRdWVyeRIMLmFwaS5SZXF1ZXN0Gg0uYXBpLlJlc3BvbnNlIgAS",
-            "KAoGTXV0YXRlEg0uYXBpLk11dGF0aW9uGg0uYXBpLkFzc2lnbmVkIgASJwoF",
-            "QWx0ZXISDi5hcGkuT3BlcmF0aW9uGgwuYXBpLlBheWxvYWQiABIzCg1Db21t",
-            "aXRPckFib3J0Eg8uYXBpLlR4bkNvbnRleHQaDy5hcGkuVHhuQ29udGV4dCIA",
-            "EioKDENoZWNrVmVyc2lvbhIKLmFwaS5DaGVjaxoMLmFwaS5WZXJzaW9uIgBC",
-            "MQoJaW8uZGdyYXBoQgtEZ3JhcGhQcm90b6oCFkRncmFwaE5ldC5DbGllbnQu",
-            "UHJvdG9iBnByb3RvMw=="));
+            "AiABKAsyDy5hcGkuVHhuQ29udGV4dBIdCgdsYXRlbmN5GAwgASgLMgwuYXBp",
+            "LkxhdGVuY3kaKwoJVWlkc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgC",
+            "IAEoCToCOAEi0AEKCE11dGF0aW9uEhAKCHNldF9qc29uGAEgASgMEhMKC2Rl",
+            "bGV0ZV9qc29uGAIgASgMEhIKCnNldF9ucXVhZHMYAyABKAwSEgoKZGVsX25x",
+            "dWFkcxgEIAEoDBIXCgNzZXQYCiADKAsyCi5hcGkuTlF1YWQSFwoDZGVsGAsg",
+            "AygLMgouYXBpLk5RdWFkEhAKCHN0YXJ0X3RzGA0gASgEEhIKCmNvbW1pdF9u",
+            "b3cYDiABKAgSHQoVaWdub3JlX2luZGV4X2NvbmZsaWN0GA8gASgIIi0KC0Fz",
+            "c2lnbmVkSWRzEg8KB3N0YXJ0SWQYASABKAQSDQoFZW5kSWQYAiABKAQiQAoJ",
+            "T3BlcmF0aW9uEg4KBnNjaGVtYRgBIAEoCRIRCglkcm9wX2F0dHIYAiABKAkS",
+            "EAoIZHJvcF9hbGwYAyABKAgiFwoHUGF5bG9hZBIMCgREYXRhGAEgASgMInAK",
+            "ClR4bkNvbnRleHQSEAoIc3RhcnRfdHMYASABKAQSEQoJY29tbWl0X3RzGAIg",
+            "ASgEEg8KB2Fib3J0ZWQYAyABKAgSDAoEa2V5cxgEIAMoCRIeCghsaW5fcmVh",
+            "ZBgNIAEoCzIMLmFwaS5MaW5SZWFkIgcKBUNoZWNrIhYKB1ZlcnNpb24SCwoD",
+            "dGFnGAEgASgJIlkKB0xpblJlYWQSIgoDaWRzGAEgAygLMhUuYXBpLkxpblJl",
+            "YWQuSWRzRW50cnkaKgoISWRzRW50cnkSCwoDa2V5GAEgASgNEg0KBXZhbHVl",
+            "GAIgASgEOgI4ASJJCgdMYXRlbmN5EhIKCnBhcnNpbmdfbnMYASABKAQSFQoN",
+            "cHJvY2Vzc2luZ19ucxgCIAEoBBITCgtlbmNvZGluZ19ucxgDIAEoBCKZAQoF",
+            "TlF1YWQSDwoHc3ViamVjdBgBIAEoCRIRCglwcmVkaWNhdGUYAiABKAkSEQoJ",
+            "b2JqZWN0X2lkGAMgASgJEiAKDG9iamVjdF92YWx1ZRgEIAEoCzIKLmFwaS5W",
+            "YWx1ZRINCgVsYWJlbBgFIAEoCRIMCgRsYW5nGAYgASgJEhoKBmZhY2V0cxgH",
+            "IAMoCzIKLmFwaS5GYWNldCL0AQoFVmFsdWUSFQoLZGVmYXVsdF92YWwYASAB",
+            "KAlIABITCglieXRlc192YWwYAiABKAxIABIRCgdpbnRfdmFsGAMgASgDSAAS",
+            "EgoIYm9vbF92YWwYBCABKAhIABIRCgdzdHJfdmFsGAUgASgJSAASFAoKZG91",
+            "YmxlX3ZhbBgGIAEoAUgAEhEKB2dlb192YWwYByABKAxIABISCghkYXRlX3Zh",
+            "bBgIIAEoDEgAEhYKDGRhdGV0aW1lX3ZhbBgJIAEoDEgAEhYKDHBhc3N3b3Jk",
+            "X3ZhbBgKIAEoCUgAEhEKB3VpZF92YWwYCyABKARIAEIFCgN2YWwiqwEKBUZh",
+            "Y2V0EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoDBIkCgh2YWxfdHlwZRgD",
+            "IAEoDjISLmFwaS5GYWNldC5WYWxUeXBlEg4KBnRva2VucxgEIAMoCRINCgVh",
+            "bGlhcxgFIAEoCSJBCgdWYWxUeXBlEgoKBlNUUklORxAAEgcKA0lOVBABEgkK",
+            "BUZMT0FUEAISCAoEQk9PTBADEgwKCERBVEVUSU1FEAQifQoKU2NoZW1hTm9k",
+            "ZRIRCglwcmVkaWNhdGUYASABKAkSDAoEdHlwZRgCIAEoCRINCgVpbmRleBgD",
+            "IAEoCBIRCgl0b2tlbml6ZXIYBCADKAkSDwoHcmV2ZXJzZRgFIAEoCBINCgVj",
+            "b3VudBgGIAEoCBIMCgRsaXN0GAcgASgIMuQBCgZEZ3JhcGgSJgoFUXVlcnkS",
+            "DC5hcGkuUmVxdWVzdBoNLmFwaS5SZXNwb25zZSIAEigKBk11dGF0ZRINLmFw",
+            "aS5NdXRhdGlvbhoNLmFwaS5Bc3NpZ25lZCIAEicKBUFsdGVyEg4uYXBpLk9w",
+            "ZXJhdGlvbhoMLmFwaS5QYXlsb2FkIgASMwoNQ29tbWl0T3JBYm9ydBIPLmFw",
+            "aS5UeG5Db250ZXh0Gg8uYXBpLlR4bkNvbnRleHQiABIqCgxDaGVja1ZlcnNp",
+            "b24SCi5hcGkuQ2hlY2saDC5hcGkuVmVyc2lvbiIAQjEKCWlvLmRncmFwaEIL",
+            "RGdyYXBoUHJvdG+qAhZEZ3JhcGhOZXQuQ2xpZW50LlByb3RvYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::DgraphNet.Client.Proto.Request), global::DgraphNet.Client.Proto.Request.Parser, new[]{ "Query", "Vars", "StartTs", "LinRead" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::DgraphNet.Client.Proto.Response), global::DgraphNet.Client.Proto.Response.Parser, new[]{ "Json", "Schema", "Txn", "Latency" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::DgraphNet.Client.Proto.Assigned), global::DgraphNet.Client.Proto.Assigned.Parser, new[]{ "Uids", "Context" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::DgraphNet.Client.Proto.Assigned), global::DgraphNet.Client.Proto.Assigned.Parser, new[]{ "Uids", "Context", "Latency" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::DgraphNet.Client.Proto.Mutation), global::DgraphNet.Client.Proto.Mutation.Parser, new[]{ "SetJson", "DeleteJson", "SetNquads", "DelNquads", "Set", "Del", "StartTs", "CommitNow", "IgnoreIndexConflict" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::DgraphNet.Client.Proto.AssignedIds), global::DgraphNet.Client.Proto.AssignedIds.Parser, new[]{ "StartId", "EndId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::DgraphNet.Client.Proto.Operation), global::DgraphNet.Client.Proto.Operation.Parser, new[]{ "Schema", "DropAttr", "DropAll" }, null, null, null),
@@ -527,6 +527,7 @@ namespace DgraphNet.Client.Proto {
     public Assigned(Assigned other) : this() {
       uids_ = other.uids_.Clone();
       Context = other.context_ != null ? other.Context.Clone() : null;
+      Latency = other.latency_ != null ? other.Latency.Clone() : null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -555,6 +556,17 @@ namespace DgraphNet.Client.Proto {
       }
     }
 
+    /// <summary>Field number for the "latency" field.</summary>
+    public const int LatencyFieldNumber = 12;
+    private global::DgraphNet.Client.Proto.Latency latency_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::DgraphNet.Client.Proto.Latency Latency {
+      get { return latency_; }
+      set {
+        latency_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Assigned);
@@ -570,6 +582,7 @@ namespace DgraphNet.Client.Proto {
       }
       if (!Uids.Equals(other.Uids)) return false;
       if (!object.Equals(Context, other.Context)) return false;
+      if (!object.Equals(Latency, other.Latency)) return false;
       return true;
     }
 
@@ -578,6 +591,7 @@ namespace DgraphNet.Client.Proto {
       int hash = 1;
       hash ^= Uids.GetHashCode();
       if (context_ != null) hash ^= Context.GetHashCode();
+      if (latency_ != null) hash ^= Latency.GetHashCode();
       return hash;
     }
 
@@ -593,6 +607,10 @@ namespace DgraphNet.Client.Proto {
         output.WriteRawTag(18);
         output.WriteMessage(Context);
       }
+      if (latency_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(Latency);
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -601,6 +619,9 @@ namespace DgraphNet.Client.Proto {
       size += uids_.CalculateSize(_map_uids_codec);
       if (context_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Context);
+      }
+      if (latency_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Latency);
       }
       return size;
     }
@@ -616,6 +637,12 @@ namespace DgraphNet.Client.Proto {
           context_ = new global::DgraphNet.Client.Proto.TxnContext();
         }
         Context.MergeFrom(other.Context);
+      }
+      if (other.latency_ != null) {
+        if (latency_ == null) {
+          latency_ = new global::DgraphNet.Client.Proto.Latency();
+        }
+        Latency.MergeFrom(other.Latency);
       }
     }
 
@@ -636,6 +663,13 @@ namespace DgraphNet.Client.Proto {
               context_ = new global::DgraphNet.Client.Proto.TxnContext();
             }
             input.ReadMessage(context_);
+            break;
+          }
+          case 98: {
+            if (latency_ == null) {
+              latency_ = new global::DgraphNet.Client.Proto.Latency();
+            }
+            input.ReadMessage(latency_);
             break;
           }
         }
@@ -773,6 +807,9 @@ namespace DgraphNet.Client.Proto {
     /// <summary>Field number for the "ignore_index_conflict" field.</summary>
     public const int IgnoreIndexConflictFieldNumber = 15;
     private bool ignoreIndexConflict_;
+    /// <summary>
+    /// this field is not parsed and used by the server anymore.
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool IgnoreIndexConflict {
       get { return ignoreIndexConflict_; }

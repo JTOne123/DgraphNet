@@ -29,6 +29,12 @@ namespace DgraphNet.Client
             return lr;
         }
 
+        private DateTime? GetDeadline()
+        {
+            if (!_deadlineSecs.HasValue) return null;
+            return DateTime.UtcNow + TimeSpan.FromSeconds(_deadlineSecs.Value);
+        }
+
         /// <summary>
         /// Creates a new Dgraph for interacting with a Dgraph store. 
         /// <para/>A single client is thread safe.
@@ -78,8 +84,8 @@ namespace DgraphNet.Client
         /// <param name="op">a protocol buffer Operation object representing the operation being performed.</param>
         public void Alter(Operation op)
         {
-            DgraphClient client = AnyClient();
-            client.Alter(op);
+            var ( client, callOptions ) = AnyClient();
+            client.Alter(op, callOptions);
         }
 
         /// <summary>
@@ -107,12 +113,17 @@ namespace DgraphNet.Client
             return b;
         }
 
-        private DgraphClient AnyClient()
+        private (DgraphClient, CallOptions) AnyClient()
         {
             Random rand = new Random();
             DgraphClient client = _clients[rand.Next(0, _clients.Count)];
 
-            return client;
+            var callOptions = new CallOptions();
+
+            var deadline = GetDeadline();
+            if (deadline.HasValue) callOptions = callOptions.WithDeadline(deadline.Value);
+
+            return (client, callOptions);
         }
 
         public static LinRead MergeLinReads(LinRead dst, LinRead src)
@@ -171,8 +182,8 @@ namespace DgraphNet.Client
 
                 request.Vars.Add(vars);
 
-                DgraphClient client = _client.AnyClient();
-                Response response = client.Query(request);
+                var ( client, callOptions ) = _client.AnyClient();
+                Response response = client.Query(request, callOptions);
 
                 MergeContext(response.Txn);
 
@@ -211,12 +222,12 @@ namespace DgraphNet.Client
                     StartTs = _context.StartTs
                 };
 
-                DgraphClient client = _client.AnyClient();
+                var (client, callOptions) = _client.AnyClient();
                 Assigned ag;
 
                 try
                 {
-                    ag = client.Mutate(request);
+                    ag = client.Mutate(request, callOptions);
                     _mutated = true;
 
                     if (mutation.CommitNow)
@@ -269,11 +280,11 @@ namespace DgraphNet.Client
                     return;
                 }
 
-                DgraphClient client = _client.AnyClient();
+                var (client, callOptions) = _client.AnyClient();
 
                 try
                 {
-                    client.CommitOrAbort(_context);
+                    client.CommitOrAbort(_context, callOptions);
                 }
                 catch (Exception ex)
                 {
@@ -306,9 +317,9 @@ namespace DgraphNet.Client
                     Aborted = true
                 };
 
-                DgraphClient client = _client.AnyClient();
+                var (client, callOptions) = _client.AnyClient();
 
-                client.CommitOrAbort(_context);
+                client.CommitOrAbort(_context, callOptions);
             }
 
             private void MergeContext(TxnContext src)
