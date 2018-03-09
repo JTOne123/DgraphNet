@@ -15,7 +15,7 @@ namespace DgraphNet.Client
     /// </summary>
     public class DgraphNet
     {
-        SemaphoreSlim _semaphore = new SemaphoreSlim(1);
+        SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         IList<DgraphClient> _clients;
         int? _deadlineSecs;
@@ -130,7 +130,7 @@ namespace DgraphNet.Client
         public static LinRead MergeLinReads(LinRead dst, LinRead src)
         {
             LinRead result = new LinRead(dst);
-
+            
             foreach (var entry in src.Ids)
             {
                 if (dst.Ids.TryGetValue(entry.Key, out ulong dstValue))

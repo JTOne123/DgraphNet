@@ -139,7 +139,7 @@ namespace DgraphNet.Client.Tests
 
                 try
                 {
-                    await TryUpsert(account);
+                    await TryUpsert(account); 
                     Interlocked.Increment(ref _successCount);
                     return;
                 }
@@ -150,18 +150,18 @@ namespace DgraphNet.Client.Tests
             }
         }
 
-        private void DoUpserts()
+        private async Task DoUpserts()
         {
             var tasks = new List<Task>();
 
             foreach (var a in _accounts)
             {
                 tasks.AddRange(Enumerable
-                    .Range(0, 5)
+                    .Range(0, 5) 
                     .Select(_ => Task.Run(() => Upsert(a))));
             }
 
-            Task.WaitAll(tasks.ToArray(), 1000 * 60 * 5);
+            await Task.WhenAll(tasks);
         }
 
         private async Task CheckIntegrity()
@@ -213,7 +213,7 @@ namespace DgraphNet.Client.Tests
         public async Task test_acct_upsert()
         {
             await Setup();
-            DoUpserts();
+            await DoUpserts();
             await CheckIntegrity();
         }
 
