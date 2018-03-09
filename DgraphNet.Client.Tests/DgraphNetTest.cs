@@ -15,7 +15,7 @@ using static DgraphNet.Client.Proto.Dgraph;
 namespace DgraphNet.Client.Tests
 {
     [TestFixture]
-    public class DgraphClientTest : DgraphIntegrationTest
+    public class DgraphNetTest : DgraphIntegrationTest
     {
         [SetUp]
         public void BeforeEach()
@@ -42,7 +42,7 @@ namespace DgraphNet.Client.Tests
                 { 4, 10L }
             });
 
-            var result = DgraphNetClient.MergeLinReads(dst, src);
+            var result = DgraphNet.MergeLinReads(dst, src);
 
             Assert.AreEqual(4, result.Ids.Count);
 
@@ -169,7 +169,7 @@ namespace DgraphNet.Client.Tests
         {
             var channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
             var stub = new DgraphClient(channel);
-            _client = new DgraphNetClient(new[] { stub }, 1);
+            _client = new DgraphNet(new[] { stub }, 1);
 
             var op = new Operation { Schema = "name: string @index(exact) ." };
 
@@ -177,7 +177,7 @@ namespace DgraphNet.Client.Tests
             _client.Alter(op);
 
             // Creates a blocking stub directly, in order to force a deadline to be exceeded.
-            var method = typeof(DgraphNetClient).GetMethod("AnyClient", BindingFlags.NonPublic | BindingFlags.Instance);
+            var method = typeof(DgraphNet).GetMethod("AnyClient", BindingFlags.NonPublic | BindingFlags.Instance);
             var (stub2, callOptions) = (ValueTuple<DgraphClient, CallOptions>)method.Invoke(_client, Array.Empty<object>());
 
             Thread.Sleep(1001);

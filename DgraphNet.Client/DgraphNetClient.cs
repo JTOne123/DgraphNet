@@ -12,7 +12,7 @@ namespace DgraphNet.Client
     /// Implementation of a DgraphClient using grpc.
     /// <para/>Queries, mutations, and most other types of admin tasks can be run from the client.
     /// </summary>
-    public class DgraphNetClient
+    public class DgraphNet
     {
         static readonly object _lock = new object();
 
@@ -40,7 +40,7 @@ namespace DgraphNet.Client
         /// <para/>A single client is thread safe.
         /// </summary>
         /// <param name="clients">One or more synchronous grpc clients. Can contain connections to multiple servers in a cluster.</param>
-        public DgraphNetClient(IList<DgraphClient> clients)
+        public DgraphNet(IList<DgraphClient> clients)
         {
             _clients = clients;
             _linRead = new LinRead();
@@ -52,7 +52,7 @@ namespace DgraphNet.Client
         /// </summary>
         /// <param name="clients">One or more synchronous grpc clients. Can contain connections to multiple servers in a cluster.</param>
         /// <param name="deadlineSecs">Deadline specified in secs, after which the client will timeout.</param>
-        public DgraphNetClient(IList<DgraphClient> clients, int deadlineSecs)
+        public DgraphNet(IList<DgraphClient> clients, int deadlineSecs)
             : this(clients)
         {
             _deadlineSecs = deadlineSecs;
@@ -61,7 +61,7 @@ namespace DgraphNet.Client
         /// <summary>
         /// Creates a new <see cref="Transaction"/> object. 
         /// <para/>A transaction lifecycle is as follows: 
-        /// <para/>- Created using <see cref="DgraphNetClient.NewTransaction"/>
+        /// <para/>- Created using <see cref="DgraphNet.NewTransaction"/>
         /// <para/>- Various <see cref="Transaction.Query(string)"/> and <see cref="Transaction.Mutate(Mutation)"/> calls made.
         /// <para/>- Commit using <see cref="Transaction.Commit"/> or Discard using <see cref="Transaction.Discard"/>. If any    
         /// mutations have been made, It's important that at least one of these methods is called to clean
@@ -149,12 +149,12 @@ namespace DgraphNet.Client
 
         public class Transaction : IDisposable
         {
-            DgraphNetClient _client;
+            DgraphNet _client;
             TxnContext _context;
             bool _finished;
             bool _mutated;
 
-            internal Transaction(DgraphNetClient client)
+            internal Transaction(DgraphNet client)
             {
                 _client = client;
                 _context = new TxnContext

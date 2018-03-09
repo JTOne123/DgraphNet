@@ -13,7 +13,7 @@ namespace DgraphNet.Client.Tests
     public class DgraphIntegrationTest
     {
         protected Channel _channel;
-        protected DgraphNetClient _client;
+        protected DgraphNet _client;
 
         protected const string HOSTNAME = "localhost";
         protected const string PORT = "9080";
@@ -23,7 +23,7 @@ namespace DgraphNet.Client.Tests
         {
             _channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
             var stub = new DgraphClient(_channel);
-            _client = new DgraphNetClient(new[] { stub });
+            _client = new DgraphNet(new[] { stub });
 
             _client.Alter(new Operation { DropAll = true });
         }

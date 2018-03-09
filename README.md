@@ -39,7 +39,7 @@ instructions in the README of that project.
 ## Using the Client
 
 ### Create the client
-a `DgraphNetClient` object can be initialised by passing it a list of `DgraphClient`
+a `DgraphNet` object can be initialised by passing it a list of `DgraphClient`
 clients. Connecting to multiple Dgraph servers in the same cluster allows for better
 distribution of workload.
 
@@ -48,20 +48,20 @@ The following code snippet shows just one connection.
 ```csharp
 Channel channel = new Channel("localhost:9080", ChannelCredentials.Insecure);
 DgraphClient stub = new DgraphClient(_channel);
-DgraphNetClient client = new DgraphNetClient(new[] { stub });
+DgraphNet client = new DgraphNet(new[] { stub });
 ```
 
 Alternatively, you can specify a deadline (in seconds) after which the client will time out when making 
 requests to the server.
 
 ```csharp
-DgraphNetClient = new DgraphNetClient(new[] { stub }, 60); // 1 min timeout
+DgraphNet = new DgraphNet(new[] { stub }, 60); // 1 min timeout
 ```
 
 ### Alter the database
 
 To set the schema, create an `Operation` object, set the schema and pass it to
-`DgraphClient#Alter` method.
+`DgraphNet#Alter` method.
 
 ```csharp
 string schema = "name: string @index(exact) .";
