@@ -15,7 +15,7 @@ namespace DgraphNet.Client
     /// </summary>
     public class DgraphNet
     {
-        static readonly object _lock = new object();
+        SemaphoreSlim _semaphore = new SemaphoreSlim(1);
 
         IList<DgraphClient> _clients;
         int? _deadlineSecs;
@@ -23,9 +23,9 @@ namespace DgraphNet.Client
 
         private LinRead GetLinReadCopy()
         {
-            Monitor.Enter(_lock);
+            _semaphore.Wait();
             LinRead lr = new LinRead(_linRead);
-            Monitor.Exit(_lock);
+            _semaphore.Release();
 
             return lr;
         }
@@ -248,7 +248,7 @@ namespace DgraphNet.Client
                         // (some mutations could have applied but not others, but we don't know
                         // which ones).  Discarding the transaction enforces that the user
                         // cannot use the txn further.
-                        DiscardAsync();
+                        await DiscardAsync();
                     }
                     finally
                     {
@@ -353,12 +353,12 @@ namespace DgraphNet.Client
                 LinRead lr = MergeLinReads(_context.LinRead, src.LinRead);
                 result.LinRead = lr;
 
-                Monitor.Enter(_lock);
+                _client._semaphore.Wait();
 
                 lr = MergeLinReads(_client._linRead, lr);
                 _client._linRead = lr;
 
-                Monitor.Exit(_lock);
+                _client._semaphore.Release();
 
                 if (_context.StartTs == 0)
                 {

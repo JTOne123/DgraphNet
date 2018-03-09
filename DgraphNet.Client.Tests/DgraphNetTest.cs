@@ -170,16 +170,16 @@ namespace DgraphNet.Client.Tests
         {
             var channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
             var stub = new DgraphClient(channel);
-            _client = new DgraphNet(new[] { stub }, 1);
+            var client = new DgraphNet(new[] { stub }, 1);
 
             var op = new Operation { Schema = "name: string @index(exact) ." };
 
             // Alters schema without exceeding the given deadline.
-            await _client.AlterAsync(op);
+            await client.AlterAsync(op);
 
             // Creates a blocking stub directly, in order to force a deadline to be exceeded.
             var method = typeof(DgraphNet).GetMethod("AnyClient", BindingFlags.NonPublic | BindingFlags.Instance);
-            var (stub2, callOptions) = (ValueTuple<DgraphClient, CallOptions>)method.Invoke(_client, Array.Empty<object>());
+            var (stub2, callOptions) = (ValueTuple<DgraphClient, CallOptions>)method.Invoke(client, Array.Empty<object>());
 
             Thread.Sleep(1001);
 
