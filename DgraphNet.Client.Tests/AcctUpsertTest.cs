@@ -27,22 +27,16 @@ namespace DgraphNet.Client.Tests
         private async Task Setup()
         {
             foreach (var f in _firsts)
-            {
                 foreach (var l in _lasts)
-                {
                     foreach (var a in _ages)
                     {
-                        var acc = new Account
+                        _accounts.Add(new Account
                         {
                             First = f,
                             Last = l,
                             Age = a
-                        };
-
-                        _accounts.Add(acc);
+                        });
                     }
-                }
-            }
 
             string schema =
                 "\n"
@@ -139,7 +133,7 @@ namespace DgraphNet.Client.Tests
 
                 try
                 {
-                    await TryUpsert(account); 
+                    await TryUpsert(account);
                     Interlocked.Increment(ref _successCount);
                     return;
                 }
@@ -157,7 +151,7 @@ namespace DgraphNet.Client.Tests
             foreach (var a in _accounts)
             {
                 tasks.AddRange(Enumerable
-                    .Range(0, 5) 
+                    .Range(0, 5)
                     .Select(_ => Task.Run(() => Upsert(a))));
             }
 
