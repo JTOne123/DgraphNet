@@ -2,6 +2,7 @@
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,21 +21,6 @@ namespace DgraphNet.Client
         IList<DgraphClient> _clients;
         int? _deadlineSecs;
         LinRead _linRead;
-
-        private LinRead GetLinReadCopy()
-        {
-            lock (_lock)
-            {
-                LinRead lr = new LinRead(_linRead);
-                return lr;
-            }
-        }
-
-        private DateTime? GetDeadline()
-        {
-            if (!_deadlineSecs.HasValue) return null;
-            return DateTime.UtcNow + TimeSpan.FromSeconds(_deadlineSecs.Value);
-        }
 
         /// <summary>
         /// Creates a new Dgraph for interacting with a Dgraph store. 
@@ -74,7 +60,6 @@ namespace DgraphNet.Client
         {
             return new Transaction(this);
         }
-
 
         public async Task AlterAsync(Operation op, CancellationToken cancellationToken = default)
         {
@@ -144,6 +129,21 @@ namespace DgraphNet.Client
             return result;
         }
 
+        private LinRead GetLinReadCopy()
+        {
+            lock (_lock)
+            {
+                LinRead lr = new LinRead(_linRead);
+                return lr;
+            }
+        }
+
+        private DateTime? GetDeadline()
+        {
+            if (!_deadlineSecs.HasValue) return null;
+            return DateTime.UtcNow + TimeSpan.FromSeconds(_deadlineSecs.Value);
+        }
+
         private (DgraphClient, CallOptions) AnyClient()
         {
             Random rand = new Random();
@@ -173,7 +173,7 @@ namespace DgraphNet.Client
                 };
             }
 
-            private Request BeforeQueryWithVars(String query, IDictionary<string, string> vars)
+            private Request BeforeQueryWithVars(string query, IDictionary<string, string> vars)
             {
                 Request request = new Request()
                 {
@@ -193,7 +193,7 @@ namespace DgraphNet.Client
                 return r;
             }
 
-            public async Task<Response> QueryWithVarsAsync(String query, IDictionary<string, string> vars, CancellationToken cancellationToken = default)
+            public async Task<Response> QueryWithVarsAsync(string query, IDictionary<string, string> vars, CancellationToken cancellationToken = default)
             {
                 var request = BeforeQueryWithVars(query, vars);
 
@@ -213,7 +213,7 @@ namespace DgraphNet.Client
             /// <param name="query">Query in GraphQL+-</param>
             /// <param name="vars">variables referred to in the QueryWithVars.</param>
             /// <returns>a Response protocol buffer object.</returns>
-            public Response QueryWithVars(String query, IDictionary<string, string> vars)
+            public Response QueryWithVars(string query, IDictionary<string, string> vars)
             {
                 var request = BeforeQueryWithVars(query, vars);
 
@@ -224,7 +224,7 @@ namespace DgraphNet.Client
                 return AfterQueryWithVars(response);
             }
 
-            public Task<Response> QueryAsync(String query, CancellationToken cancellationToken = default)
+            public Task<Response> QueryAsync(string query, CancellationToken cancellationToken = default)
             {
                 return QueryWithVarsAsync(query, new Dictionary<string, string>(), cancellationToken);
             }
@@ -234,7 +234,7 @@ namespace DgraphNet.Client
             /// </summary>
             /// <param name="query">Query in GraphQL+-</param>
             /// <returns>a Response protocol buffer object</returns>
-            public Response Query(String query)
+            public Response Query(string query)
             {
                 return QueryWithVars(query, new Dictionary<string, string>());
             }
