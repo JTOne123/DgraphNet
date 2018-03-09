@@ -86,7 +86,7 @@ namespace DgraphNet.Client.Tests
             var resp = await _client.NewTransaction().QueryAsync(q);
             Console.WriteLine(resp.Json.ToStringUtf8());
 
-            mut = DgraphNet.DeleteEdges(
+            mut = DgraphNet.CreateDeleteEdgesMutation(
                 new Mutation { CommitNow = true },
                 uid,
                 "friends", "loc"
