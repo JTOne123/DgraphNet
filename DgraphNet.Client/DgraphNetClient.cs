@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using static DgraphNet.Client.Proto.Dgraph;
 
 namespace DgraphNet.Client
@@ -62,8 +63,8 @@ namespace DgraphNet.Client
         /// Creates a new <see cref="Transaction"/> object. 
         /// <para/>A transaction lifecycle is as follows: 
         /// <para/>- Created using <see cref="DgraphNet.NewTransaction"/>
-        /// <para/>- Various <see cref="Transaction.Query(string)"/> and <see cref="Transaction.Mutate(Mutation)"/> calls made.
-        /// <para/>- Commit using <see cref="Transaction.Commit"/> or Discard using <see cref="Transaction.Discard"/>. If any    
+        /// <para/>- Various <see cref="Transaction.QueryAsync(string)"/> and <see cref="Transaction.MutateAsync(Mutation)"/> calls made.
+        /// <para/>- Commit using <see cref="Transaction.CommitAsync"/> or Discard using <see cref="Transaction.DiscardAsync"/>. If any    
         /// mutations have been made, It's important that at least one of these methods is called to clean
         /// up resources. Discard is a no-op if Commit has already been called, so it's safe to call it
         /// after Commit.
@@ -82,16 +83,16 @@ namespace DgraphNet.Client
         /// <para/>- Drop the database.
         /// </summary>
         /// <param name="op">a protocol buffer Operation object representing the operation being performed.</param>
-        public void Alter(Operation op)
+        public async Task AlterAsync(Operation op)
         {
             var ( client, callOptions ) = AnyClient();
-            client.Alter(op, callOptions);
+            await client.AlterAsync(op, callOptions); 
         }
 
         /// <summary>
         /// Sets the edges corresponding to predicates on the node with the given uid for deletion. This
         /// function returns a new <see cref="Mutation"/> object with the edges set. It is the caller's responsibility to
-        /// run the mutation by calling <see cref="Transaction.Mutate(Mutation)"/>.
+        /// run the mutation by calling <see cref="Transaction.MutateAsync(Mutation)"/>.
         /// </summary>
         /// <param name="mu">Mutation to add edges to</param>
         /// <param name="uid">uid uid of the node</param>
@@ -171,7 +172,7 @@ namespace DgraphNet.Client
             /// <param name="query">Query in GraphQL+-</param>
             /// <param name="vars">variables referred to in the QueryWithVars.</param>
             /// <returns>a Response protocol buffer object.</returns>
-            public Response QueryWithVars(String query, IDictionary<string, string> vars)
+            public async Task<Response> QueryWithVarsAsync(String query, IDictionary<string, string> vars)
             {
                 Request request = new Request()
                 {
@@ -183,7 +184,7 @@ namespace DgraphNet.Client
                 request.Vars.Add(vars);
 
                 var ( client, callOptions ) = _client.AnyClient();
-                Response response = client.Query(request, callOptions);
+                Response response = await client.QueryAsync(request, callOptions);
 
                 MergeContext(response.Txn);
 
@@ -191,13 +192,13 @@ namespace DgraphNet.Client
             }
 
             /// <summary>
-            /// Calls <see cref="Transaction.QueryWithVars(string, IDictionary{string, string})"/> with an empty vars map.
+            /// Calls <see cref="Transaction.QueryWithVarsAsync(string, IDictionary{string, string})"/> with an empty vars map.
             /// </summary>
             /// <param name="query">Query in GraphQL+-</param>
             /// <returns>a Response protocol buffer object</returns>
-            public Response Query(String query)
+            public Task<Response> QueryAsync(String query)
             {
-                return QueryWithVars(query, new Dictionary<string, string>());
+                return QueryWithVarsAsync(query, new Dictionary<string, string>());
             }
 
             /// <summary>
@@ -205,12 +206,12 @@ namespace DgraphNet.Client
             /// set and delete. Mutations can either be encoded as JSON or as RDFs.
             /// 
             /// <para/>If <see cref="Mutation.CommitNow"/> is set, then this call will result in the transaction being committed. 
-            /// In this case, an explicit call to <see cref="Transaction.Commit"/> doesn't need to subsequently be made.
+            /// In this case, an explicit call to <see cref="Transaction.CommitAsync"/> doesn't need to subsequently be made.
             /// 
             /// </summary>
             /// <param name="mutation">a Mutation protocol buffer object representing the mutation.</param>
             /// <returns>an Assigned protocol buffer object. Its call will result in the transaction being committed. In this case, an explicit call to Transaction#commit doesn't need to subsequently be made.</returns>
-            public Assigned Mutate(Mutation mutation)
+            public async Task<Assigned> MutateAsync(Mutation mutation)
             {
                 if (_finished)
                 {
@@ -227,7 +228,7 @@ namespace DgraphNet.Client
 
                 try
                 {
-                    ag = client.Mutate(request, callOptions);
+                    ag = await client.MutateAsync(request, callOptions);
                     _mutated = true;
 
                     if (mutation.CommitNow)
@@ -247,7 +248,7 @@ namespace DgraphNet.Client
                         // (some mutations could have applied but not others, but we don't know
                         // which ones).  Discarding the transaction enforces that the user
                         // cannot use the txn further.
-                        Discard();
+                        DiscardAsync();
                     }
                     finally
                     {
@@ -266,7 +267,7 @@ namespace DgraphNet.Client
             /// thrown if transactions that modify the same data are being run concurrently. It's up to the
             /// user to decide if they wish to retry. In this case, the user should create a new transaction.
             /// </summary>
-            public void Commit()
+            public async Task CommitAsync()
             {
                 if (_finished)
                 {
@@ -284,7 +285,7 @@ namespace DgraphNet.Client
 
                 try
                 {
-                    client.CommitOrAbort(_context, callOptions);
+                    await client.CommitOrAbortAsync(_context, callOptions);
                 }
                 catch (Exception ex)
                 {
@@ -299,6 +300,29 @@ namespace DgraphNet.Client
             /// <para/>In some cases, the transaction can't be discarded, e.g. the grpc connection is
             /// unavailable. In these cases, the server will eventually do the transaction clean up.
             /// </summary>
+            public async Task DiscardAsync()
+            {
+                if (_finished)
+                {
+                    return;
+                }
+                _finished = true;
+
+                if (!_mutated)
+                {
+                    return;
+                }
+
+                _context = new TxnContext(_context)
+                {
+                    Aborted = true
+                };
+
+                var (client, callOptions) = _client.AnyClient();
+
+                await client.CommitOrAbortAsync(_context, callOptions);
+            }
+
             public void Discard()
             {
                 if (_finished)

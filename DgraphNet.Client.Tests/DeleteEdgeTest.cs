@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DgraphNet.Client.Tests
 {
@@ -12,7 +13,7 @@ namespace DgraphNet.Client.Tests
     public class DeleteEdgeTest : DgraphIntegrationTest
     {
         [Test]
-        public void test_delete_edges()
+        public async Task test_delete_edges()
         {
             Person alice = new Person
             {
@@ -49,7 +50,7 @@ namespace DgraphNet.Client.Tests
             {
                 Schema = "age: int .\nmarried: bool ."
             };
-            _client.Alter(op);
+            await _client.AlterAsync(op);
 
             var mut = new Mutation
             {
@@ -57,7 +58,7 @@ namespace DgraphNet.Client.Tests
                 SetJson = ByteString.CopyFromUtf8(JsonConvert.SerializeObject(alice))
             };
 
-            var ag = _client.NewTransaction().Mutate(mut);
+            var ag = await _client.NewTransaction().MutateAsync(mut);
             var uid = ag.Uids["blank-0"];
 
             string q =
@@ -82,7 +83,7 @@ namespace DgraphNet.Client.Tests
 
             q = q.Replace("%0", uid);
 
-            var resp = _client.NewTransaction().Query(q);
+            var resp = await _client.NewTransaction().QueryAsync(q);
             Console.WriteLine(resp.Json.ToStringUtf8());
 
             mut = DgraphNet.DeleteEdges(
@@ -91,9 +92,9 @@ namespace DgraphNet.Client.Tests
                 "friends", "loc"
             );
 
-            _client.NewTransaction().Mutate(mut);
+            await _client.NewTransaction().MutateAsync(mut);
 
-            resp = _client.NewTransaction().Query(q);
+            resp = await _client.NewTransaction().QueryAsync(q);
             Console.WriteLine(resp.Json.ToStringUtf8());
 
             var root = JsonConvert.DeserializeObject<Root>(resp.Json.ToStringUtf8());

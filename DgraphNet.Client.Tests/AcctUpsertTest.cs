@@ -24,7 +24,7 @@ namespace DgraphNet.Client.Tests
 
         List<Account> _accounts = new List<Account>();
 
-        private void Setup()
+        private async Task Setup()
         {
             foreach (var f in _firsts)
             {
@@ -51,10 +51,10 @@ namespace DgraphNet.Client.Tests
                     + "   age:    int      @index(int)   @upsert .\n"
                     + "   when:   int      @index(int)   @upsert .\n";
 
-            _client.Alter(new Operation { Schema = schema });
+            await _client.AlterAsync(new Operation { Schema = schema });
         }
 
-        private void TryUpsert(Account account)
+        private async Task TryUpsert(Account account)
         {
             var txn = _client.NewTransaction();
 
@@ -73,7 +73,7 @@ namespace DgraphNet.Client.Tests
 
             try
             {
-                var resp = txn.Query(query);
+                var resp = await txn.QueryAsync(query);
                 var decode1 = JsonConvert.DeserializeObject<Decode1>(resp.Json.ToStringUtf8());
 
                 Assert.IsTrue(decode1.Get.Count <= 1);
@@ -102,7 +102,7 @@ namespace DgraphNet.Client.Tests
                         SetNquads = ByteString.CopyFromUtf8(nqs)
                     };
 
-                    var assigned = txn.Mutate(mut1);
+                    var assigned = await txn.MutateAsync(mut1);
 
                     uid = assigned.Uids["acct"];
                 }
@@ -116,16 +116,16 @@ namespace DgraphNet.Client.Tests
                     SetNquads = ByteString.CopyFromUtf8(nq)
                 };
 
-                txn.Mutate(mut2);
-                txn.Commit();
+                await txn.MutateAsync(mut2);
+                await txn.CommitAsync();
             }
             finally
             {
-                txn.Discard();
+                await txn.DiscardAsync();
             }
         }
 
-        private void Upsert(Account account)
+        private async Task Upsert(Account account)
         {
             while (true)
             {
@@ -139,7 +139,7 @@ namespace DgraphNet.Client.Tests
 
                 try
                 {
-                    TryUpsert(account);
+                    await TryUpsert(account);
                     Interlocked.Increment(ref _successCount);
                     return;
                 }
@@ -164,7 +164,7 @@ namespace DgraphNet.Client.Tests
             Task.WaitAll(tasks.ToArray(), 1000 * 60 * 5);
         }
 
-        private void CheckIntegrity()
+        private async Task CheckIntegrity()
         {
             string q =
                 "{\n"
@@ -177,7 +177,7 @@ namespace DgraphNet.Client.Tests
 
             q = q.Replace("%0", string.Join(",", _firsts));
 
-            var resp = _client.NewTransaction().Query(q);
+            var resp = await _client.NewTransaction().QueryAsync(q);
             var decode2 = JsonConvert.DeserializeObject<Decode2>(resp.Json.ToStringUtf8());
 
             var accountSet = new HashSet<string>();
@@ -210,11 +210,11 @@ namespace DgraphNet.Client.Tests
         }
 
         [Test]
-        public void test_acct_upsert()
+        public async Task test_acct_upsert()
         {
-            Setup();
+            await Setup();
             DoUpserts();
-            CheckIntegrity();
+            await CheckIntegrity();
         }
 
         class Account
