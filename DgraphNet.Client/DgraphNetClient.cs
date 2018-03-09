@@ -15,7 +15,7 @@ namespace DgraphNet.Client
     /// </summary>
     public class DgraphNet
     {
-        SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        readonly object _lock = new object();
 
         IList<DgraphClient> _clients;
         int? _deadlineSecs;
@@ -23,11 +23,11 @@ namespace DgraphNet.Client
 
         private LinRead GetLinReadCopy()
         {
-            _semaphore.Wait();
-            LinRead lr = new LinRead(_linRead);
-            _semaphore.Release();
-
-            return lr;
+            lock (_lock)
+            {
+                LinRead lr = new LinRead(_linRead);
+                return lr;
+            }
         }
 
         private DateTime? GetDeadline()
@@ -85,8 +85,8 @@ namespace DgraphNet.Client
         /// <param name="op">a protocol buffer Operation object representing the operation being performed.</param>
         public async Task AlterAsync(Operation op)
         {
-            var ( client, callOptions ) = AnyClient();
-            await client.AlterAsync(op, callOptions); 
+            var (client, callOptions) = AnyClient();
+            await client.AlterAsync(op, callOptions);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace DgraphNet.Client
         public static LinRead MergeLinReads(LinRead dst, LinRead src)
         {
             LinRead result = new LinRead(dst);
-            
+
             foreach (var entry in src.Ids)
             {
                 if (dst.Ids.TryGetValue(entry.Key, out ulong dstValue))
@@ -183,7 +183,7 @@ namespace DgraphNet.Client
 
                 request.Vars.Add(vars);
 
-                var ( client, callOptions ) = _client.AnyClient();
+                var (client, callOptions) = _client.AnyClient();
                 Response response = await client.QueryAsync(request, callOptions);
 
                 MergeContext(response.Txn);
@@ -353,12 +353,11 @@ namespace DgraphNet.Client
                 LinRead lr = MergeLinReads(_context.LinRead, src.LinRead);
                 result.LinRead = lr;
 
-                _client._semaphore.Wait();
-
-                lr = MergeLinReads(_client._linRead, lr);
-                _client._linRead = lr;
-
-                _client._semaphore.Release();
+                lock (_client._lock)
+                {
+                    lr = MergeLinReads(_client._linRead, lr);
+                    _client._linRead = lr;
+                }
 
                 if (_context.StartTs == 0)
                 {
