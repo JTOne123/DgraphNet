@@ -161,7 +161,7 @@ namespace DgraphNet.Client.Tests
                     .Select(_ => Task.Run(() => Upsert(a))));
             }
 
-            Task.WaitAll(tasks.ToArray(), TimeSpan.FromMinutes(5).Milliseconds);
+            Task.WaitAll(tasks.ToArray(), 1000 * 60 * 5);
         }
 
         private void CheckIntegrity()
