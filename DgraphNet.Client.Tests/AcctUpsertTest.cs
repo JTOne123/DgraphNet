@@ -38,12 +38,12 @@ namespace DgraphNet.Client.Tests
                         });
                     }
 
-            string schema =
-                "\n"
-                    + "   first:  string   @index(term)  @upsert .\n"
-                    + "   last:   string   @index(hash)  @upsert .\n"
-                    + "   age:    int      @index(int)   @upsert .\n"
-                    + "   when:   int      @index(int)   @upsert .\n";
+            string schema = new StringBuilder()
+                .AppendLine("first:  string   @index(term)  @upsert .")
+                .AppendLine("last:   string   @index(hash)  @upsert .")
+                .AppendLine("age:    int      @index(int)   @upsert .")
+                .AppendLine("when:   int      @index(int)   @upsert .")
+                .ToString();
 
             await _client.AlterAsync(new Operation { Schema = schema });
         }
@@ -52,18 +52,14 @@ namespace DgraphNet.Client.Tests
         {
             var txn = _client.NewTransaction();
 
-            var query =
-            "\n"
-                + "  {\n"
-                + "   get(func: eq(first, \"%0\")) @filter(eq(last, \"%1\") AND eq(age, %2)) {\n"
-                + "    uid: _uid_\n"
-                + "   }\n"
-                + "  }\n";
-
-            query = query
-                .Replace("%0", account.First)
-                .Replace("%1", account.Last)
-                .Replace("%2", account.Age.ToString());
+            var query = new StringBuilder()
+                .AppendLine("{")
+                    .AppendLine($"get(func: eq(first, \"{account.First}\")) @filter(eq(last, \"{account.Last}\") AND eq(age, {account.Age}))")
+                    .AppendLine("{")
+                        .AppendLine("uid: _uid_")
+                    .AppendLine("}")
+                .AppendLine("}")
+                .ToString();
 
             try
             {
@@ -80,16 +76,11 @@ namespace DgraphNet.Client.Tests
                 }
                 else
                 {
-                    string nqs =
-                        "\n"
-                            + "   _:acct <first> \"%0\" .\n"
-                            + "   _:acct <last>  \"%1\" .\n"
-                            + "   _:acct <age>   \"%2\"^^<xs:int> .";
-
-                    nqs = nqs
-                        .Replace("%0", account.First)
-                        .Replace("%1", account.Last)
-                        .Replace("%2", account.Age.ToString());
+                    string nqs = new StringBuilder()
+                        .AppendLine($"_:acct <first> \"{account.First}\" .")
+                        .AppendLine($"_:acct <last>  \"{account.Last}\" .")
+                        .AppendLine($"_:acct <age>   \"{account.Age}\"^^<xs:int> .")
+                        .ToString();
 
                     var mut1 = new Mutation
                     {
@@ -101,9 +92,7 @@ namespace DgraphNet.Client.Tests
                     uid = assigned.Uids["acct"];
                 }
 
-                string nq = "<%0> <when> \"%1\"^^<xs:int> ."
-                    .Replace("%0", uid)
-                    .Replace("%1", DateTime.Now.Ticks.ToString());
+                string nq = $"<{uid}> <when> \"{DateTime.UtcNow.Ticks}\"^^<xs:int> .";
 
                 var mut2 = new Mutation
                 {
@@ -160,16 +149,16 @@ namespace DgraphNet.Client.Tests
 
         private async Task CheckIntegrity()
         {
-            string q =
-                "{\n"
-                    + "   all(func: anyofterms(first, \"%0\")) {\n"
-                    + "    first\n"
-                    + "    last\n"
-                    + "    age\n"
-                    + "   }\n"
-                    + "}";
-
-            q = q.Replace("%0", string.Join(",", _firsts));
+            string q = new StringBuilder()
+                .AppendLine("{")
+                    .AppendLine($"all(func: anyofterms(first, \"{string.Join(",", _firsts)}\"))")
+                    .AppendLine("{")
+                        .AppendLine("first")
+                        .AppendLine("last")
+                        .AppendLine("age")
+                    .AppendLine("}")
+                .AppendLine("}")
+                .ToString();
 
             var resp = await _client.NewTransaction().QueryAsync(q);
             var decode2 = JsonConvert.DeserializeObject<Decode2>(resp.Json.ToStringUtf8());
@@ -182,10 +171,7 @@ namespace DgraphNet.Client.Tests
                 Assert.IsTrue(!string.IsNullOrEmpty(record.Last));
                 Assert.IsTrue(record.Age != 0);
 
-                string entry = "%0_%1_%2"
-                    .Replace("%0", record.First)
-                    .Replace("%1", record.Last)
-                    .Replace("%2", record.Age.ToString());
+                string entry = $"{record.First}_{record.Last}_{record.Age}";
 
                 accountSet.Add(entry);
             }
@@ -194,11 +180,7 @@ namespace DgraphNet.Client.Tests
 
             foreach (var a in _accounts)
             {
-                string entry = "%0_%1_%2"
-                    .Replace("%0", a.First)
-                    .Replace("%1", a.Last)
-                    .Replace("%2", a.Age.ToString());
-
+                string entry = $"{a.First}_{a.Last}_{a.Age}";
                 Assert.IsTrue(accountSet.Contains(entry));
             }
         }

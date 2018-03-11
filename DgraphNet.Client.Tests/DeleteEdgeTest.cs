@@ -61,27 +61,32 @@ namespace DgraphNet.Client.Tests
             var ag = await _client.NewTransaction().MutateAsync(mut);
             var uid = ag.Uids["blank-0"];
 
-            string q =
-                "{\n"
-                    + "  me(func: uid(%0)) {\n"
-                    + "   uid\n"
-                    + "   name\n"
-                    + "   age\n"
-                    + "   loc\n"
-                    + "   married\n"
-                    + "   friends {\n"
-                    + "    uid\n"
-                    + "    name\n"
-                    + "    age\n"
-                    + "   }\n"
-                    + "   schools {\n"
-                    + "    uid\n"
-                    + "    name@en\n"
-                    + "   }\n"
-                    + "  }\n"
-                    + " }";
+            string q = new StringBuilder()
+                .AppendLine("{")
+                    .AppendLine($"me(func: uid({uid}))")
+                    .AppendLine("{")
+                        .AppendLine("uid")
+                        .AppendLine("name")
+                        .AppendLine("age")
+                        .AppendLine("loc")
+                        .AppendLine("married")
 
-            q = q.Replace("%0", uid);
+                        .AppendLine("friends")
+                        .AppendLine("{")
+                            .AppendLine("uid")
+                            .AppendLine("name")
+                            .AppendLine("age")
+                        .AppendLine("}")
+
+                        .AppendLine("schools")
+                        .AppendLine("{")
+                            .AppendLine("uid")
+                            .AppendLine("name@en")
+                        .AppendLine("}")
+
+                    .AppendLine("}")
+                .AppendLine("}")
+                .ToString();
 
             var resp = await _client.NewTransaction().QueryAsync(q);
             Console.WriteLine(resp.Json.ToStringUtf8());

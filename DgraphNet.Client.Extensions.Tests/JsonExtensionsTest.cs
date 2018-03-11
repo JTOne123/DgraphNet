@@ -57,9 +57,9 @@ namespace DgraphNet.Client.Extensions.Tests
         public void test_query_with_vars_json()
         {
             var q = new StringBuilder()
-                .Append("query accounts($terms: string)")
+                .AppendLine("query accounts($terms: string)")
                 .AppendLine("{")
-                    .Append($"accounts(func: anyofterms(first, $terms))")
+                    .AppendLine($"accounts(func: anyofterms(first, $terms))")
                     .AppendLine("{")
                         .AppendLine("first")
                         .AppendLine("last")
@@ -83,7 +83,7 @@ namespace DgraphNet.Client.Extensions.Tests
         {
             var q = new StringBuilder()
                 .AppendLine("{")
-                    .Append($"accounts(func: anyofterms(first, \"{string.Join(",", _firsts)}\"))")
+                    .AppendLine($"accounts(func: anyofterms(first, \"{string.Join(",", _firsts)}\"))")
                     .AppendLine("{")
                         .AppendLine("first")
                         .AppendLine("last")

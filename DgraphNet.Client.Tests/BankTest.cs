@@ -48,17 +48,19 @@ namespace DgraphNet.Client.Tests
 
         private async Task RunTotal()
         {
-            string q =
-              " {\n"
-            + "   var(func: uid(%0)) {\n"
-            + "    b as bal\n"
-            + "   }\n"
-            + "   total() {\n"
-            + "    bal: sum(val(b))\n"
-            + "   }\n"
-            + "  }";
+            string q = new StringBuilder()
+                .AppendLine("{")
+                    .AppendLine($"var(func: uid({string.Join(",", _uids)}))")
+                    .AppendLine("{")
+                        .AppendLine("b as bal")
+                    .AppendLine("}")
 
-            q = q.Replace("%0", string.Join(",", _uids));
+                    .AppendLine("total()")
+                    .AppendLine("{")
+                        .AppendLine("bal: sum(val(b))")
+                    .AppendLine("}")
+                .AppendLine("}")
+                .ToString();
 
             var txn = _client.NewTransaction();
             var resp = await txn.QueryAsync(q);
@@ -96,9 +98,12 @@ namespace DgraphNet.Client.Tests
 
             try
             {
-                string fq = "{both(func: uid(%0, %1)) { uid, bal }}"
-                    .Replace("%0", from)
-                    .Replace("%1", to);
+                string fq = new StringBuilder()
+                    .AppendLine("{")
+                        .AppendLine($"both(func: uid({from}, {to}))")
+                        .AppendLine("{ uid, bal }")
+                    .AppendLine("}")
+                    .ToString();
 
                 var resp = await txn.QueryAsync(fq);
                 var accounts = JsonConvert.DeserializeObject<Accounts>(resp.Json.ToStringUtf8());

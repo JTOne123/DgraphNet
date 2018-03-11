@@ -54,8 +54,15 @@ namespace DgraphNet.Client.Tests
 
             var txn = _client.NewTransaction();
             var uids = _data.Select(x => _uidsMap[x]);
-            var query = "{ me(func: uid(%0)) { name } }"
-                    .Replace("%0", string.Join(",", uids));
+
+            var query = new StringBuilder()
+                .AppendLine("{")
+                    .AppendLine($"me(func: uid({string.Join(",", uids)}))")
+                    .AppendLine("{")
+                        .AppendLine("name")
+                    .AppendLine("}")
+                .AppendLine("}")
+                .ToString();
 
             Console.WriteLine($"Query: {query}");
 

@@ -105,8 +105,14 @@ namespace DgraphNet.Client.Tests
                 var ag = await txn.MutateAsync(mutation);
                 string bob = ag.Uids["bob"];
 
-                string query = "{ find_bob(func: uid(%0)) { name } }"
-                    .Replace("%0", bob);
+                string query = new StringBuilder()
+                    .AppendLine("{")
+                        .AppendLine($"find_bob(func: uid({bob}))")
+                        .AppendLine("{")
+                            .AppendLine("name")
+                        .AppendLine("}")
+                    .AppendLine("}")
+                    .ToString();
 
                 var resp = await txn.QueryAsync(query);
                 var json = JObject.Parse(resp.Json.ToStringUtf8());
@@ -116,7 +122,7 @@ namespace DgraphNet.Client.Tests
 
                 mutation = new Mutation
                 {
-                    DelNquads = ByteString.CopyFromUtf8("<%0> * * .".Replace("%0", bob))
+                    DelNquads = ByteString.CopyFromUtf8($"<{bob}> * * .")
                 };
 
                 await txn.MutateAsync(mutation);

@@ -11,7 +11,7 @@ using static DgraphNet.Client.Proto.Dgraph;
 namespace DgraphNet.Client
 {
     /// <summary>
-    /// Implementation of a DgraphClient using gRPC.
+    /// Implementation of a Dgraph client using gRPC.
     /// <para/>Queries, mutations, and most other types of admin tasks can be run from the client.
     /// </summary>
     public class DgraphNet
