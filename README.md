@@ -339,12 +339,31 @@ await _client.AlterAsync(new Operation { Schema = schema });
 ```
 
 ## Development
+This project is developed with `Visual Studio 2017 Community` and `.NET Core 2.0`.
+
+Alternatively, you can use `Visual Studio Code` and the `dotnet` CLI from .NET Core.
 
 ### Building the source
-TO DO
+In Visual Studio 2017, simply build the solution.
+Otherwise, run in the solution folder:
+
+```
+dotnet build
+```
+
+In order to generate the proto files for Dgraph, run `protoc.bat`.
 
 ### Code Style
-TO DO
+Follow the `.editorconfig` file, supported by Visual Studio and Visual Studio Code.
 
 ### Running unit tests
-TO DO
+This project uses NUnit 3.0 for unit tests.
+
+- In Visual Studio, you can use the integrated `Test Explorer` tool in order to run tests.
+- In Visual Studio Code, you can install `.NET Core Test Explorer` extension in order to run tests.
+
+Alternatively, you can run this project:
+
+```
+dotnet run --project DgraphNet.Client.Tests.ConsoleRunner
+```

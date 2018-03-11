@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Extensions
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DgraphNet.Client.Extensions.Tests", "DgraphNet.Client.Extensions.Tests\DgraphNet.Client.Extensions.Tests.csproj", "{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Extensions.Tests", "DgraphNet.Client.Extensions.Tests\DgraphNet.Client.Extensions.Tests.csproj", "{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DgraphNet.Client.Tests.ConsoleRunner", "DgraphNet.Client.Tests.ConsoleRunner\DgraphNet.Client.Tests.ConsoleRunner.csproj", "{D688E74B-646B-4339-B478-820E2F182D13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D688E74B-646B-4339-B478-820E2F182D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D688E74B-646B-4339-B478-820E2F182D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D688E74B-646B-4339-B478-820E2F182D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D688E74B-646B-4339-B478-820E2F182D13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A3ED7D5A-3E34-43C1-8DA9-419142343E24} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
 		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
+		{D688E74B-646B-4339-B478-820E2F182D13} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0EE7E911-F61E-45E9-96D1-51B48720B2F9}

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnitLite" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DgraphNet.Client.Extensions.Tests\DgraphNet.Client.Extensions.Tests.csproj" />
+    <ProjectReference Include="..\DgraphNet.Client.Tests\DgraphNet.Client.Tests.csproj" />
+  </ItemGroup>
+
+</Project>
