@@ -14,8 +14,6 @@ namespace CodeCake
     {
         void StandardUnitTests( string configuration, IEnumerable<SolutionProject> testProjects )
         {
-            return;
-
             var testDlls = testProjects.Select( p =>
                          new
                          {
@@ -42,10 +40,12 @@ namespace CodeCake
                         ResultsFile = test.ProjectPath.CombineWithFilePath( "TestResult.Net461.xml" )
                     } );
                 }
+
                 if( Cake.FileExists( test.NetCoreAppDll ) )
                 {
                     var e = XDocument.Load( test.CSProjPath.FullPath ).Root;
-                    if( e.Descendants( "PackageReference" ).Any( r => r.Attribute("Include")?.Value == "Microsoft.NET.Test.Sdk" ) )
+
+                    if ( e.Descendants( "PackageReference" ).Any( r => r.Attribute("Include")?.Value == "Microsoft.NET.Test.Sdk" ) )
                     {
                         Cake.Information( $"Testing: {test.NetCoreAppDll}" );
                         Cake.DotNetCoreTest( test.CSProjPath.FullPath, new DotNetCoreTestSettings()

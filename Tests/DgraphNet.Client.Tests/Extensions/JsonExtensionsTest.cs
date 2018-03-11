@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using DgraphNet.Client.Extensions;
 using System.Linq;
 
-namespace DgraphNet.Client.Extensions.Tests
+namespace DgraphNet.Client.Tests.Extensions
 {
     [TestFixture]
     public class JsonExtensionsTest : DgraphIntegrationTest

@@ -42,9 +42,10 @@ namespace CodeCake
                            .Where( p => !(p is SolutionFolder)
                                         && p.Name != "CodeCakeBuilder" );
 
-            // We do not publish .Tests projects for this solution.
+            // We do not publish Tests and Samples projects for this solution.
             var projectsToPublish = projects
-                                        .Where( p => !p.Path.Segments.Contains( "Tests" ) );
+                                        .Where(p => !p.Path.Segments.Contains("Tests"))
+                                        .Where(p => !p.Path.Segments.Contains("Samples"));
 
             SimpleRepositoryInfo gitInfo = Cake.GetSimpleRepositoryInfo();
 

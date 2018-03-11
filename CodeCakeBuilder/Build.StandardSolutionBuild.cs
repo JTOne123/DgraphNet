@@ -1,4 +1,4 @@
-using Cake.Common.Solution;
+﻿using Cake.Common.Solution;
 using Cake.Common.Tools.DotNetCore;
 using Cake.Common.Tools.DotNetCore.Build;
 using SimpleGitVersion;
@@ -22,7 +22,10 @@ namespace CodeCake
             {
                 var exclude = new List<string>( excludedProjectName );
                 exclude.Add( "CodeCakeBuilder" );
+                exclude.Add( "DgraphNet.Client.Sample" );
+
                 tempSln.ExcludeProjectsFromBuild( exclude.ToArray() );
+
                 Cake.DotNetCoreBuild( tempSln.FullPath.FullPath,
                     new DotNetCoreBuildSettings().AddVersionArguments( gitInfo, s =>
                     {

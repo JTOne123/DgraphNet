@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DgraphNet.Client.Extensions.Tests
+namespace DgraphNet.Client.Tests.Extensions
 {
     [TestFixture]
     public class SchemaBuilderTest
