@@ -37,9 +37,10 @@ and understand how to run and work with Dgraph.
   * [Running unit tests](#running-unit-tests)
 
 ## Download
-Install `DgraphNet.Client` NuGet package. 
 
-For extensions, install `DgraphNet.Client.Extensions` package.
+Install [DgraphNet.Client](https://www.nuget.org/packages/DgraphNet.Client/) NuGet package. 
+
+For extensions, install [DgraphNet.Client.Extensions](https://www.nuget.org/packages/DgraphNet.Client.Extensions/) package.
 
 ## Quickstart
 Build and run the [DgraphNet.Client.Sample] project in the `Samples` folder, which
