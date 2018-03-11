@@ -3,7 +3,7 @@
 A minimal implementation for a Dgraph client for .NET, using [grpc]. 
 It exposes both synchronous and asynchronous API.
 
-The target framework of the library is `.NET Standard 2.0`.
+The library targets both `.NET Standard 2.0` and `.NET 4.6.1`.
 
 [grpc]: https://grpc.io/
 
@@ -339,7 +339,7 @@ await _client.AlterAsync(new Operation { Schema = schema });
 ```
 
 ## Development
-This project is developed with `Visual Studio 2017 Community` and `.NET Core 2.0`.
+This project is developed with `Visual Studio 2017 Community`. It targets both .NET Standard and .NET Framework 4.6.1.
 
 Alternatively, you can use `Visual Studio Code` and the `dotnet` CLI from .NET Core.
 
@@ -353,8 +353,17 @@ dotnet build
 
 In order to generate the proto files for Dgraph, run `protoc.bat`.
 
+[codecake]: https://github.com/SimpleGitVersion/CodeCake
+
+The `CodeCakeBuilder` project is a build project based on [CodeCake build system][codecake]: it builds, runs test projects, and generates NuGet packages.
+
 ### Code Style
 Follow the `.editorconfig` file, supported by Visual Studio and Visual Studio Code.
+
+### Versioning
+[csemver]: http://csemver.org/
+
+The project follows [CSemVer specification][csemver], an operational subset of Semantic Versioning 2.0.0. 
 
 ### Running unit tests
 This project uses NUnit 3 for unit tests.
@@ -365,6 +374,6 @@ This project uses NUnit 3 for unit tests.
 Alternatively, you can run this project:
 
 ```
-dotnet run --project DgraphNet.Client.Tests.ConsoleRunner
+dotnet run --project Tests\DgraphNet.Client.NetCore.Tests
 ```
 It will run the tests in a console application thanks to NUnitLite.
