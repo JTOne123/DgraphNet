@@ -43,7 +43,7 @@ namespace DgraphNet.Client.Tests
                 { 4, 10L }
             });
 
-            var result = DgraphNet.MergeLinReads(dst, src);
+            var result = DgraphNetClient.MergeLinReads(dst, src);
 
             Assert.AreEqual(4, result.Ids.Count);
 
@@ -175,7 +175,7 @@ namespace DgraphNet.Client.Tests
         public async Task test_client_with_deadline()
         {
             var channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
-            var client = new DgraphNet(new DgraphConnection(channel), 1);
+            var client = new DgraphNetClient(new DgraphConnection(channel), 1);
 
             var op = new Operation { Schema = "name: string @index(exact) ." };
 
@@ -183,7 +183,7 @@ namespace DgraphNet.Client.Tests
             await client.AlterAsync(op);
 
             // Creates a blocking stub directly, in order to force a deadline to be exceeded.
-            var anyConnectionMethod = typeof(DgraphNet)
+            var anyConnectionMethod = typeof(DgraphNetClient)
                 .GetMethod("AnyConnection", BindingFlags.NonPublic | BindingFlags.Instance);
 
             var (conn, callOptions) = (ValueTuple<DgraphConnection, CallOptions>)anyConnectionMethod

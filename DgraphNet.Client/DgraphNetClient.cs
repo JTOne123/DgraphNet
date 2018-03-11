@@ -14,7 +14,7 @@ namespace DgraphNet.Client
     /// Implementation of a Dgraph client using gRPC.
     /// <para/>Queries, mutations, and most other types of admin tasks can be run from the client.
     /// </summary>
-    public class DgraphNet
+    public class DgraphNetClient
     {
         readonly object _lock = new object();
 
@@ -22,7 +22,7 @@ namespace DgraphNet.Client
         int? _deadlineSecs;
         LinRead _linRead;
 
-        private DgraphNet()
+        private DgraphNetClient()
         {
             _linRead = new LinRead();
         }
@@ -32,7 +32,7 @@ namespace DgraphNet.Client
         /// <para/>A single client is thread safe.
         /// </summary>
         /// <param name="pool">A Dgraph connection pool. Can contain connections to multiple servers in a cluster.</param>
-        public DgraphNet(DgraphConnectionPool pool) : this()
+        public DgraphNetClient(DgraphConnectionPool pool) : this()
         {
             if (pool.Connections.Count == 0) throw new InvalidOperationException("A connection pool must have at least one connection.");
             _pool = pool;
@@ -43,7 +43,7 @@ namespace DgraphNet.Client
         /// <para/>A single client is thread safe.
         /// </summary>
         /// <param name="connection">A Dgraph connection.</param>
-        public DgraphNet(DgraphConnection connection)
+        public DgraphNetClient(DgraphConnection connection)
             : this(new DgraphConnectionPool(new[] { connection }))
         {
 
@@ -55,7 +55,7 @@ namespace DgraphNet.Client
         /// </summary>
         /// <param name="pool">A Dgraph connection pool. Can contain connections to multiple servers in a cluster.</param>
         /// <param name="deadlineSecs">Deadline specified in secs, after which the client will timeout.</param>
-        public DgraphNet(DgraphConnectionPool pool, int deadlineSecs)
+        public DgraphNetClient(DgraphConnectionPool pool, int deadlineSecs)
             : this(pool)
         {
             _deadlineSecs = deadlineSecs;
@@ -67,7 +67,7 @@ namespace DgraphNet.Client
         /// </summary>
         /// <param name="connection">A Dgraph connection.</param>
         /// <param name="deadlineSecs">Deadline specified in secs, after which the client will timeout.</param>
-        public DgraphNet(DgraphConnection connection, int deadlineSecs)
+        public DgraphNetClient(DgraphConnection connection, int deadlineSecs)
             : this(new DgraphConnectionPool(new[] { connection }), deadlineSecs)
         {
 
@@ -81,7 +81,7 @@ namespace DgraphNet.Client
         /// <summary>
         /// Creates a new <see cref="Transaction"/> object. 
         /// <para/>A transaction lifecycle is as follows: 
-        /// <para/>- Created using <see cref="DgraphNet.NewTransaction"/>
+        /// <para/>- Created using <see cref="DgraphNetClient.NewTransaction"/>
         /// <para/>- Various <see cref="Transaction.QueryAsync(string)"/> and <see cref="Transaction.MutateAsync(Mutation)"/> calls made.
         /// <para/>- Commit using <see cref="Transaction.CommitAsync"/> or Discard using <see cref="Transaction.DiscardAsync"/>. If any    
         /// mutations have been made, It's important that at least one of these methods is called to clean
@@ -201,12 +201,12 @@ namespace DgraphNet.Client
 
         public class Transaction : IDisposable
         {
-            DgraphNet _client;
+            DgraphNetClient _client;
             TxnContext _context;
             bool _finished;
             bool _mutated;
 
-            internal Transaction(DgraphNet client)
+            internal Transaction(DgraphNetClient client)
             {
                 _client = client;
                 _context = new TxnContext

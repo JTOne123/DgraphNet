@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static DgraphNet.Client.DgraphNet;
+using static DgraphNet.Client.DgraphNetClient;
 
 namespace DgraphNet.Client.Extensions
 {

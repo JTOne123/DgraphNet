@@ -178,7 +178,7 @@ namespace DgraphNet.Client.Extensions.Builders
                 sb.Append(" ");
                 sb.Append("@index");
 
-                if(_type == PredicateType.String)
+                if (_type == PredicateType.String)
                 {
                     var selected = Enum
                         .GetValues(typeof(StringIndexType))
@@ -200,7 +200,7 @@ namespace DgraphNet.Client.Extensions.Builders
                 }
             }
 
-            if(_count)
+            if (_count)
             {
                 sb.Append(" ");
                 sb.Append("@count");
@@ -229,7 +229,7 @@ namespace DgraphNet.Client.Extensions.Builders
 
         public EdgeBuilder(string name)
         {
-            name = _name;
+            _name = name;
         }
 
         public IEdgeBuilder Reverse()

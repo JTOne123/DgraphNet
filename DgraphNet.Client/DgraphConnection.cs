@@ -64,7 +64,7 @@ namespace DgraphNet.Client
         internal DgraphClient Client => _client;
 
         /// <summary>
-        /// Closes the connection. Prefer <see cref="DgraphNet.CloseAsync"/> or <see cref="DgraphConnectionPool.CloseAllAsync"/> instead.
+        /// Closes the connection. Prefer <see cref="DgraphNetClient.CloseAsync"/> or <see cref="DgraphConnectionPool.CloseAllAsync"/> instead.
         /// </summary>
         /// <returns></returns>
         public async Task CloseAsync()

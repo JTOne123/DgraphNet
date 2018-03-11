@@ -162,7 +162,7 @@ namespace DgraphNet.Client.Tests
             var txnTask = Task.WhenAll(Enumerable.Range(0, 10)
                 .Select(_ => Task.Run(() => TxnLoop())));
 
-            if(!txnTask.Wait(1000 * 60 * 5))
+            if (!txnTask.Wait(1000 * 60 * 5))
             {
                 Console.WriteLine("Timeout elapsed");
             }

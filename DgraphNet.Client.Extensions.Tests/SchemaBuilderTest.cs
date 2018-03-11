@@ -14,7 +14,7 @@ namespace DgraphNet.Client.Extensions.Tests
         {
             var schema = Schema.Predicate("first")
                 .String()
-                .Index(StringIndexType.Hash|StringIndexType.Term|StringIndexType.FullText)
+                .Index(StringIndexType.Hash | StringIndexType.Term | StringIndexType.FullText)
                 .List()
                 .Count()
                 .Upsert()
@@ -53,6 +53,19 @@ namespace DgraphNet.Client.Extensions.Tests
                 .Build();
 
             string exp = "first: [datetime] @index(month) @count @upsert .";
+
+            Assert.AreEqual(exp, schema);
+        }
+
+        [Test]
+        public void test_build_edge()
+        {
+            var schema = Schema.Edge("friends")
+                .Count()
+                .Reverse()
+                .Build();
+
+            string exp = "friends: uid @reverse @count .";
 
             Assert.AreEqual(exp, schema);
         }

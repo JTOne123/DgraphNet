@@ -1,4 +1,4 @@
-﻿using DgraphNet.Client.Proto;
+using DgraphNet.Client.Proto;
 using Grpc.Core;
 using NUnit.Framework;
 using System;
@@ -11,7 +11,7 @@ namespace DgraphNet.Client.Extensions.Tests
     [TestFixture]
     public class DgraphIntegrationTest
     {
-        protected DgraphNet _client;
+        protected DgraphNetClient _client;
 
         protected const string HOSTNAME = "localhost";
         protected const string PORT = "9080";
@@ -22,7 +22,7 @@ namespace DgraphNet.Client.Extensions.Tests
             var pool = new DgraphConnectionPool()
                 .Add(new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure));
 
-            _client = new DgraphNet(pool);
+            _client = new DgraphNetClient(pool);
 
             await _client.AlterAsync(new Operation { DropAll = true });
         }

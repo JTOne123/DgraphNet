@@ -94,7 +94,7 @@ namespace DgraphNet.Client
 
         /// <summary>
         /// Closes the connections.
-        /// You can instead call <see cref="DgraphNet.CloseAsync"/>.
+        /// You can instead call <see cref="DgraphNetClient.CloseAsync"/>.
         /// </summary>
         /// <returns></returns>
         public async Task CloseAllAsync()
