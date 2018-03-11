@@ -169,8 +169,7 @@ namespace DgraphNet.Client.Tests
         public async Task test_client_with_deadline()
         {
             var channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
-            var stub = new DgraphClient(channel);
-            var client = new DgraphNet(new[] { stub }, 1);
+            var client = new DgraphNet(new DgraphConnection(channel), 1);
 
             var op = new Operation { Schema = "name: string @index(exact) ." };
 
@@ -178,12 +177,17 @@ namespace DgraphNet.Client.Tests
             await client.AlterAsync(op);
 
             // Creates a blocking stub directly, in order to force a deadline to be exceeded.
-            var method = typeof(DgraphNet).GetMethod("AnyClient", BindingFlags.NonPublic | BindingFlags.Instance);
-            var (stub2, callOptions) = (ValueTuple<DgraphClient, CallOptions>)method.Invoke(client, Array.Empty<object>());
+            var anyConnectionMethod = typeof(DgraphNet)
+                .GetMethod("AnyConnection", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            var (conn, callOptions) = (ValueTuple<DgraphConnection, CallOptions>)anyConnectionMethod
+                .Invoke(client, Array.Empty<object>());
+
+            var stub = conn.Client;
 
             Thread.Sleep(1001);
 
-            Assert.ThrowsAsync<RpcException>(async () => await stub.AlterAsync(op, callOptions), "Deadline should have been exceeded");
+            Assert.Throws<RpcException>(() => stub.Alter(op, callOptions), "Deadline should have been exceeded");
         }
     }
 }

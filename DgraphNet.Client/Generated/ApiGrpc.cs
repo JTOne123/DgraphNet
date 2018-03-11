@@ -30,7 +30,7 @@ namespace DgraphNet.Client.Proto {
   /// <summary>
   /// Graph response.
   /// </summary>
-  public static partial class Dgraph
+  internal static partial class Dgraph
   {
     static readonly string __ServiceName = "api.Dgraph";
 

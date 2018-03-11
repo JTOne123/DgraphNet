@@ -5,14 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using static DgraphNet.Client.Proto.Dgraph;
 
 namespace DgraphNet.Client.Tests
 {
     [TestFixture]
     public class DgraphIntegrationTest
     {
-        protected Channel _channel;
         protected DgraphNet _client;
 
         protected const string HOSTNAME = "localhost";
@@ -21,9 +19,10 @@ namespace DgraphNet.Client.Tests
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
         {
-            _channel = new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure);
-            var stub = new DgraphClient(_channel);
-            _client = new DgraphNet(new[] { stub });
+            var pool = new DgraphConnectionPool()
+                .Add(new Channel($"{HOSTNAME}:{PORT}", ChannelCredentials.Insecure));
+
+            _client = new DgraphNet(pool);
 
             await _client.AlterAsync(new Operation { DropAll = true });
         }
@@ -31,7 +30,7 @@ namespace DgraphNet.Client.Tests
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
-            await _channel.ShutdownAsync();
+            await _client.Pool.CloseAllAsync();
         }
     }
 }

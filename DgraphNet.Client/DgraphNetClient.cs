@@ -11,39 +11,72 @@ using static DgraphNet.Client.Proto.Dgraph;
 namespace DgraphNet.Client
 {
     /// <summary>
-    /// Implementation of a DgraphClient using grpc.
+    /// Implementation of a DgraphClient using gRPC.
     /// <para/>Queries, mutations, and most other types of admin tasks can be run from the client.
     /// </summary>
     public class DgraphNet
     {
         readonly object _lock = new object();
 
-        IList<DgraphClient> _clients;
+        DgraphConnectionPool _pool;
         int? _deadlineSecs;
         LinRead _linRead;
 
-        /// <summary>
-        /// Creates a new Dgraph for interacting with a Dgraph store. 
-        /// <para/>A single client is thread safe.
-        /// </summary>
-        /// <param name="clients">One or more synchronous grpc clients. Can contain connections to multiple servers in a cluster.</param>
-        public DgraphNet(IList<DgraphClient> clients)
+        private DgraphNet()
         {
-            _clients = clients;
             _linRead = new LinRead();
         }
 
         /// <summary>
-        /// Creates a new Dgraph for interacting with a Dgraph store, with the the specified deadline. 
+        /// Creates a new DgraphNet client for interacting with a Dgraph store. 
+        /// <para/>A single client is thread safe.
+        /// </summary>
+        /// <param name="pool">A Dgraph connection pool. Can contain connections to multiple servers in a cluster.</param>
+        public DgraphNet(DgraphConnectionPool pool) : this()
+        {
+            if (pool.Connections.Count == 0) throw new InvalidOperationException("A connection pool must have at least one connection.");
+            _pool = pool;
+        }
+
+        /// <summary>
+        /// Creates a new DgraphNet client for interacting with a Dgraph store. 
+        /// <para/>A single client is thread safe.
+        /// </summary>
+        /// <param name="connection">A Dgraph connection.</param>
+        public DgraphNet(DgraphConnection connection)
+            : this(new DgraphConnectionPool(new[] { connection }))
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new DgraphNet client for interacting with a Dgraph store, with the the specified deadline. 
         /// <para>A single client is thread safe.</para>
         /// </summary>
-        /// <param name="clients">One or more synchronous grpc clients. Can contain connections to multiple servers in a cluster.</param>
+        /// <param name="pool">A Dgraph connection pool. Can contain connections to multiple servers in a cluster.</param>
         /// <param name="deadlineSecs">Deadline specified in secs, after which the client will timeout.</param>
-        public DgraphNet(IList<DgraphClient> clients, int deadlineSecs)
-            : this(clients)
+        public DgraphNet(DgraphConnectionPool pool, int deadlineSecs)
+            : this(pool)
         {
             _deadlineSecs = deadlineSecs;
         }
+
+        /// <summary>
+        /// Creates a new DgraphNet client for interacting with a Dgraph store. 
+        /// <para/>A single client is thread safe.
+        /// </summary>
+        /// <param name="connection">A Dgraph connection.</param>
+        /// <param name="deadlineSecs">Deadline specified in secs, after which the client will timeout.</param>
+        public DgraphNet(DgraphConnection connection, int deadlineSecs)
+            : this(new DgraphConnectionPool(new[] { connection }), deadlineSecs)
+        {
+
+        }
+
+        /// <summary>
+        /// Pool of Dgraph connections for this client.
+        /// </summary>
+        public DgraphConnectionPool Pool => _pool;
 
         /// <summary>
         /// Creates a new <see cref="Transaction"/> object. 
@@ -63,10 +96,10 @@ namespace DgraphNet.Client
 
         public async Task AlterAsync(Operation op, CancellationToken cancellationToken = default)
         {
-            var (client, callOptions) = AnyClient();
+            var (conn, callOptions) = AnyConnection();
             callOptions = callOptions.WithCancellationToken(cancellationToken);
 
-            await client.AlterAsync(op, callOptions);
+            await conn.Client.AlterAsync(op, callOptions);
         }
 
         /// <summary>
@@ -79,8 +112,17 @@ namespace DgraphNet.Client
         /// <param name="op">a protocol buffer Operation object representing the operation being performed.</param>
         public void Alter(Operation op)
         {
-            var (client, callOptions) = AnyClient();
-            client.Alter(op, callOptions);
+            var (conn, callOptions) = AnyConnection();
+            conn.Client.Alter(op, callOptions);
+        }
+
+        /// <summary>
+        /// Closes all connections of the pool used by this client.
+        /// </summary>
+        /// <returns></returns>
+        public async Task CloseAsync()
+        {
+            await _pool.CloseAllAsync();
         }
 
         /// <summary>
@@ -144,17 +186,17 @@ namespace DgraphNet.Client
             return DateTime.UtcNow + TimeSpan.FromSeconds(_deadlineSecs.Value);
         }
 
-        private (DgraphClient, CallOptions) AnyClient()
+        private (DgraphConnection, CallOptions) AnyConnection()
         {
             Random rand = new Random();
-            DgraphClient client = _clients[rand.Next(0, _clients.Count)];
+            var connection = _pool.Connections[rand.Next(0, _pool.Connections.Count)];
 
             var callOptions = new CallOptions();
 
             var deadline = GetDeadline();
             if (deadline.HasValue) callOptions = callOptions.WithDeadline(deadline.Value);
 
-            return (client, callOptions);
+            return (connection, callOptions);
         }
 
         public class Transaction : IDisposable
@@ -197,10 +239,10 @@ namespace DgraphNet.Client
             {
                 var request = BeforeQueryWithVars(query, vars);
 
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
                 callOptions = callOptions.WithCancellationToken(cancellationToken);
 
-                Response response = await client.QueryAsync(request, callOptions);
+                Response response = await conn.Client.QueryAsync(request, callOptions);
 
                 return AfterQueryWithVars(response);
             }
@@ -217,9 +259,9 @@ namespace DgraphNet.Client
             {
                 var request = BeforeQueryWithVars(query, vars);
 
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
 
-                Response response = client.Query(request, callOptions);
+                Response response = conn.Client.Query(request, callOptions);
 
                 return AfterQueryWithVars(response);
             }
@@ -267,12 +309,12 @@ namespace DgraphNet.Client
             {
                 var request = BeforeMutate(mutation);
 
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
                 callOptions = callOptions.WithCancellationToken(cancellationToken);
 
                 try
                 {
-                    Assigned ag = await client.MutateAsync(request, callOptions);
+                    Assigned ag = await conn.Client.MutateAsync(request, callOptions);
                     return AfterMutate(request, ag);
                 }
                 catch (Exception ex)
@@ -307,11 +349,11 @@ namespace DgraphNet.Client
             public Assigned Mutate(Mutation mutation)
             {
                 var request = BeforeMutate(mutation);
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
 
                 try
                 {
-                    Assigned ag = client.Mutate(request, callOptions);
+                    Assigned ag = conn.Client.Mutate(request, callOptions);
                     return AfterMutate(request, ag);
                 }
                 catch (Exception ex)
@@ -354,12 +396,12 @@ namespace DgraphNet.Client
             {
                 if (!BeforeCommit()) return;
 
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
                 callOptions = callOptions.WithCancellationToken(cancellationToken);
 
                 try
                 {
-                    await client.CommitOrAbortAsync(_context, callOptions);
+                    await conn.Client.CommitOrAbortAsync(_context, callOptions);
                 }
                 catch (Exception ex)
                 {
@@ -379,11 +421,11 @@ namespace DgraphNet.Client
             {
                 if (!BeforeCommit()) return;
 
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
 
                 try
                 {
-                   client.CommitOrAbort(_context, callOptions);
+                    conn.Client.CommitOrAbort(_context, callOptions);
                 }
                 catch (Exception ex)
                 {
@@ -410,10 +452,10 @@ namespace DgraphNet.Client
             {
                 if (!BeforeDiscard()) return;
 
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
                 callOptions = callOptions.WithCancellationToken(cancellationToken);
 
-                await client.CommitOrAbortAsync(_context, callOptions);
+                await conn.Client.CommitOrAbortAsync(_context, callOptions);
             }
 
             /// <summary>
@@ -427,9 +469,9 @@ namespace DgraphNet.Client
             {
                 if (!BeforeDiscard()) return;
 
-                var (client, callOptions) = _client.AnyClient();
+                var (conn, callOptions) = _client.AnyConnection();
 
-                client.CommitOrAbort(_context, callOptions);
+                conn.Client.CommitOrAbort(_context, callOptions);
             }
 
             private void MergeContext(TxnContext src)
