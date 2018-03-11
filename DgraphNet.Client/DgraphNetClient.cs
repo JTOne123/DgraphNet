@@ -94,7 +94,7 @@ namespace DgraphNet.Client
             return new Transaction(this);
         }
 
-        public async Task AlterAsync(Operation op, CancellationToken cancellationToken = default)
+        public async Task AlterAsync(Operation op, CancellationToken cancellationToken = default(CancellationToken))
         {
             var (conn, callOptions) = AnyConnection();
             callOptions = callOptions.WithCancellationToken(cancellationToken);
@@ -120,9 +120,9 @@ namespace DgraphNet.Client
         /// Closes all connections of the pool used by this client.
         /// </summary>
         /// <returns></returns>
-        public async Task CloseAsync()
+        public Task CloseAsync()
         {
-            await _pool.CloseAllAsync();
+            return _pool.CloseAllAsync();
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace DgraphNet.Client
                 return r;
             }
 
-            public async Task<Response> QueryWithVarsAsync(string query, IDictionary<string, string> vars, CancellationToken cancellationToken = default)
+            public async Task<Response> QueryWithVarsAsync(string query, IDictionary<string, string> vars, CancellationToken cancellationToken = default(CancellationToken))
             {
                 var request = BeforeQueryWithVars(query, vars);
 
@@ -266,7 +266,7 @@ namespace DgraphNet.Client
                 return AfterQueryWithVars(response);
             }
 
-            public Task<Response> QueryAsync(string query, CancellationToken cancellationToken = default)
+            public Task<Response> QueryAsync(string query, CancellationToken cancellationToken = default(CancellationToken))
             {
                 return QueryWithVarsAsync(query, new Dictionary<string, string>(), cancellationToken);
             }
@@ -305,7 +305,7 @@ namespace DgraphNet.Client
                 return ag;
             }
 
-            public async Task<Assigned> MutateAsync(Mutation mutation, CancellationToken cancellationToken = default)
+            public async Task<Assigned> MutateAsync(Mutation mutation, CancellationToken cancellationToken = default(CancellationToken))
             {
                 var request = BeforeMutate(mutation);
 
@@ -392,7 +392,7 @@ namespace DgraphNet.Client
                 return true;
             }
 
-            public async Task CommitAsync(CancellationToken cancellationToken = default)
+            public async Task CommitAsync(CancellationToken cancellationToken = default(CancellationToken))
             {
                 if (!BeforeCommit()) return;
 
@@ -448,7 +448,7 @@ namespace DgraphNet.Client
                 return true;
             }
 
-            public async Task DiscardAsync(CancellationToken cancellationToken = default)
+            public async Task DiscardAsync(CancellationToken cancellationToken = default(CancellationToken))
             {
                 if (!BeforeDiscard()) return;
 

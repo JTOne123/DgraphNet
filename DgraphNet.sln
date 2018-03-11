@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		nuget.config = nuget.config
 		protoc.bat = protoc.bat
 		README.md = README.md
+		RepositoryInfo.xml = RepositoryInfo.xml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Extensions", "DgraphNet.Client.Extensions\DgraphNet.Client.Extensions.csproj", "{5F96873F-6B79-4426-97BB-3B3FD3FBA76D}"
@@ -29,6 +30,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Extensions.Tests", "Tests\DgraphNet.Client.Extensions.Tests\DgraphNet.Client.Extensions.Tests.csproj", "{A2A871B2-9669-455C-9AF7-071BE7AE3323}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Tests.ConsoleRunner", "Tests\DgraphNet.Client.Tests.ConsoleRunner\DgraphNet.Client.Tests.ConsoleRunner.csproj", "{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{AD22EAF1-024C-4D9C-A7FC-A7ACF5A75F36}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeCakeBuilder", "CodeCakeBuilder\CodeCakeBuilder.csproj", "{D49DC428-5D72-4955-A3A9-DD859E9F884A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +65,10 @@ Global
 		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D49DC428-5D72-4955-A3A9-DD859E9F884A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D49DC428-5D72-4955-A3A9-DD859E9F884A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D49DC428-5D72-4955-A3A9-DD859E9F884A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D49DC428-5D72-4955-A3A9-DD859E9F884A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +78,7 @@ Global
 		{341FDF3E-58B8-41FA-9D59-B9ABF2045496} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
 		{A2A871B2-9669-455C-9AF7-071BE7AE3323} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
 		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
+		{D49DC428-5D72-4955-A3A9-DD859E9F884A} = {AD22EAF1-024C-4D9C-A7FC-A7ACF5A75F36}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0EE7E911-F61E-45E9-96D1-51B48720B2F9}

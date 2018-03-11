@@ -30,7 +30,7 @@ namespace DgraphNet.Client.Extensions
             return Deserialize<T>(resp.Json);
         }
 
-        public static async Task<T> QueryAsync<T>(this Transaction @this, string query, CancellationToken cancellationToken = default)
+        public static async Task<T> QueryAsync<T>(this Transaction @this, string query, CancellationToken cancellationToken = default(CancellationToken))
             where T : class
         {
             var resp = await @this.QueryAsync(query);
@@ -48,7 +48,7 @@ namespace DgraphNet.Client.Extensions
             return Deserialize<T>(resp.Json);
         }
 
-        public static async Task<T> QueryWithVarsAsync<T>(this Transaction @this, string query, IDictionary<string, string> vars, CancellationToken cancellationToken = default)
+        public static async Task<T> QueryWithVarsAsync<T>(this Transaction @this, string query, IDictionary<string, string> vars, CancellationToken cancellationToken = default(CancellationToken))
             where T : class
         {
             var resp = await @this.QueryWithVarsAsync(query, vars);

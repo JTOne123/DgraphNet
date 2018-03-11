@@ -1,4 +1,4 @@
-# Dgraph Client for .NET
+# Dgraph .NET - Dgraph client for .NET
 
 A minimal implementation for a Dgraph client for .NET, using [grpc]. 
 It exposes both synchronous and asynchronous API.
