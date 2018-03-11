@@ -357,7 +357,7 @@ In order to generate the proto files for Dgraph, run `protoc.bat`.
 Follow the `.editorconfig` file, supported by Visual Studio and Visual Studio Code.
 
 ### Running unit tests
-This project uses NUnit 3.0 for unit tests.
+This project uses NUnit 3 for unit tests.
 
 - In Visual Studio, you can use the integrated `Test Explorer` tool in order to run tests.
 - In Visual Studio Code, you can install `.NET Core Test Explorer` extension in order to run tests.
@@ -367,3 +367,4 @@ Alternatively, you can run this project:
 ```
 dotnet run --project DgraphNet.Client.Tests.ConsoleRunner
 ```
+It will run the tests in a console application thanks to NUnitLite.

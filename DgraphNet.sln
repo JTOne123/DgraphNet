@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client", "DgraphNet.Client\DgraphNet.Client.csproj", "{0A4CE564-7D12-4FD7-8DC9-9F95F48B13C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Tests", "DgraphNet.Client.Tests\DgraphNet.Client.Tests.csproj", "{A3ED7D5A-3E34-43C1-8DA9-419142343E24}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A95B3787-6D50-47AA-B619-9E833C3FA4E6}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -22,9 +20,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Extensions
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Extensions.Tests", "DgraphNet.Client.Extensions.Tests\DgraphNet.Client.Extensions.Tests.csproj", "{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{029005CF-2034-4278-A9CB-0814B50129D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DgraphNet.Client.Tests.ConsoleRunner", "DgraphNet.Client.Tests.ConsoleRunner\DgraphNet.Client.Tests.ConsoleRunner.csproj", "{D688E74B-646B-4339-B478-820E2F182D13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Sample", "Samples\DgraphNet.Client.Sample\DgraphNet.Client.Sample.csproj", "{EB8A57B5-E8D7-4E5D-A398-D50DED683C95}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Tests", "Tests\DgraphNet.Client.Tests\DgraphNet.Client.Tests.csproj", "{341FDF3E-58B8-41FA-9D59-B9ABF2045496}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Extensions.Tests", "Tests\DgraphNet.Client.Extensions.Tests\DgraphNet.Client.Extensions.Tests.csproj", "{A2A871B2-9669-455C-9AF7-071BE7AE3323}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DgraphNet.Client.Tests.ConsoleRunner", "Tests\DgraphNet.Client.Tests.ConsoleRunner\DgraphNet.Client.Tests.ConsoleRunner.csproj", "{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,30 +40,35 @@ Global
 		{0A4CE564-7D12-4FD7-8DC9-9F95F48B13C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4CE564-7D12-4FD7-8DC9-9F95F48B13C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A4CE564-7D12-4FD7-8DC9-9F95F48B13C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3ED7D5A-3E34-43C1-8DA9-419142343E24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3ED7D5A-3E34-43C1-8DA9-419142343E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3ED7D5A-3E34-43C1-8DA9-419142343E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3ED7D5A-3E34-43C1-8DA9-419142343E24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F96873F-6B79-4426-97BB-3B3FD3FBA76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F96873F-6B79-4426-97BB-3B3FD3FBA76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F96873F-6B79-4426-97BB-3B3FD3FBA76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F96873F-6B79-4426-97BB-3B3FD3FBA76D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D688E74B-646B-4339-B478-820E2F182D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D688E74B-646B-4339-B478-820E2F182D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D688E74B-646B-4339-B478-820E2F182D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D688E74B-646B-4339-B478-820E2F182D13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB8A57B5-E8D7-4E5D-A398-D50DED683C95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB8A57B5-E8D7-4E5D-A398-D50DED683C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB8A57B5-E8D7-4E5D-A398-D50DED683C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB8A57B5-E8D7-4E5D-A398-D50DED683C95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{341FDF3E-58B8-41FA-9D59-B9ABF2045496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341FDF3E-58B8-41FA-9D59-B9ABF2045496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341FDF3E-58B8-41FA-9D59-B9ABF2045496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341FDF3E-58B8-41FA-9D59-B9ABF2045496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2A871B2-9669-455C-9AF7-071BE7AE3323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2A871B2-9669-455C-9AF7-071BE7AE3323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2A871B2-9669-455C-9AF7-071BE7AE3323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2A871B2-9669-455C-9AF7-071BE7AE3323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A3ED7D5A-3E34-43C1-8DA9-419142343E24} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
-		{2AB21B0B-3A10-4FDD-AEFD-06CD24BAD59A} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
-		{D688E74B-646B-4339-B478-820E2F182D13} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
+		{EB8A57B5-E8D7-4E5D-A398-D50DED683C95} = {029005CF-2034-4278-A9CB-0814B50129D2}
+		{341FDF3E-58B8-41FA-9D59-B9ABF2045496} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
+		{A2A871B2-9669-455C-9AF7-071BE7AE3323} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
+		{EF3EF455-140B-4687-AC16-03FE0A6ABD2B} = {DC2B5C33-1AF2-4A48-BE18-0E1E00F60DCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0EE7E911-F61E-45E9-96D1-51B48720B2F9}
