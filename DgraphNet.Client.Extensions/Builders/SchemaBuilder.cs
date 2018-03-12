@@ -198,6 +198,12 @@ namespace DgraphNet.Client.Extensions.Builders
                     sb.Append(_dateTimeIndexType.ToString().ToLowerInvariant());
                     sb.Append(")");
                 }
+                else
+                {
+                    sb.Append("(");
+                    sb.Append(_type.ToString().ToLowerInvariant());
+                    sb.Append(")");
+                }
             }
 
             if (_count)

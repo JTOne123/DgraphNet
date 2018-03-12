@@ -36,9 +36,32 @@ namespace DgraphNet.Client.Tests.Extensions
                 .Upsert()
                 .Build();
 
-            string exp = "first: [int] @index @count @upsert .";
+            string exp = "first: [int] @index(int) @count @upsert .";
 
             Assert.AreEqual(exp, schema);
+
+            schema = Schema.Predicate("first")
+                .Float()
+                .Index()
+                .Build();
+
+            exp = "first: float @index(float) .";
+
+            Assert.AreEqual(exp, schema);
+
+            schema = Schema.Predicate("first")
+                .Geo()
+                .Index()
+                .Build();
+
+            exp = "first: geo @index(geo) .";
+
+            schema = Schema.Predicate("first")
+                .Bool()
+                .Index()
+                .Build();
+
+            exp = "first: bool @index(bool) .";
         }
 
         [Test]
