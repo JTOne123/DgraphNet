@@ -1,5 +1,8 @@
 # DgraphNet - Dgraph client for .NET
 
+> This project is no longer actively maintained, as Dgraph now has an official client for the .NET platform (thank you guys!).
+> The official client can be found here: https://github.com/dgraph-io/dgraph.net
+
 A minimal implementation for a Dgraph client for .NET, using [grpc]. 
 It exposes both synchronous and asynchronous API.
 
